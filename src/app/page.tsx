@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default function Home() {
   // State to track which project or blog post is currently selected for the modal
