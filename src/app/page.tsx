@@ -130,9 +130,7 @@ const table = new dynamodb.Table(this, 'MyTable', {
     <div className="bg-[#0C1B2A] text-white min-h-screen w-full flex flex-col">
       {/* HEADER / NAVBAR */}
       <header className="w-full py-4 px-8 flex items-center justify-between bg-[#0C1B2A]">
-      <h1 className="text-xl font-bold sm:text-2xl lg:text-3xl">
-    Serverless & AI Portfolio
-  </h1>        <nav className="flex gap-4">
+      <nav className="flex gap-4">
           <a href="#home" className="hover:underline">Home</a>
           <a href="#portfolio" className="hover:underline">Portfolio</a>
           <a href="#blog" className="hover:underline">Blog</a>
