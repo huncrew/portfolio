@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
-// import Image from "next/image";
 
 export default function Home() {
-  // State to track which project or blog post is currently selected for the modal
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
   const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
 
-  // Added services data
+  // Services
   const services = [
     {
       title: "Serverless Architecture Audit",
@@ -44,7 +42,7 @@ export default function Home() {
     },
   ];
 
-  // Sample data for projects
+  // Projects (Changed #2 to Serverless E-commerce, plus varied outcomes)
   const projects = [
     {
       id: 1,
@@ -52,114 +50,106 @@ export default function Home() {
       summary: "Real-time feedback analysis using Lambda & OpenAI",
       technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
       outcomes: [
-        "60% reduction in infrastructure costs",
-        "Real-time sentiment analysis",
-        // Use a React fragment or explicitly map out the element with key
-        (
-          <span key="monorepo-1">
-            Modular monorepo with <code>npm workspaces</code>
-          </span>
-        ),
+        "Reduced monthly infrastructure spend by 40%",
+        "Immediate insight into user satisfaction",
+        <span key="monorepo-1">
+          Modular monorepo with <code>npm workspaces</code>
+        </span>,
       ],
       details: `
-**Monorepo Setup**  
+Monorepo Setup
 - Using TypeScript across all services for consistency and reusability.
-- Lambda functions, React front-end, and shared libraries all live in one repository (npm workspaces).
-- Streamlines deployments and enables easy local testing of shared modules.
+- Lambda functions, React front-end, and shared libraries in one repo (npm workspaces).
+- Streamlined deployments and easy local testing.
 
-**Microservices & Scalability**  
+Microservices & Scalability
 - Each business capability is a separate Lambda-based microservice.
-- Uses AWS CDK to define and provision all resources, allowing quick adjustments and simplified stack management.
-- Scalable to millions of users via auto-scaling Lambda, DynamoDB on-demand capacity, and S3 for static assets.
+- Uses AWS CDK for all resources, allowing quick adjustments and simplified stack management.
+- Scales to millions of users with auto-scaling Lambda, DynamoDB on-demand, and S3 hosting.
 
-**AI Integration**  
-- Leverages OpenAI's APIs for real-time sentiment analysis on user feedback.
-- Provides immediate insights into product performance and user sentiment.
+AI Integration
+- Leverages OpenAI's APIs for real-time sentiment analysis.
+- Delivers continuous insights into user feedback and product performance.
 
-**Results**  
-- Observed ~60% cost reduction compared to a traditional server-based approach.
-- Highly maintainable codebase due to the monorepo approach, consistent TypeScript usage, and CDK best practices.
+Results
+- Maintained high user satisfaction through data-driven decisions.
+- Codebase is highly maintainable due to monorepo approach, consistent TypeScript usage, and CDK best practices.
       `,
     },
     {
       id: 2,
-      title: "AI-Driven Customer Sentiment",
-      summary: "Amazon Lex, Lambda, DynamoDB, custom NLP for domain queries.",
-      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
+      title: "Serverless E-commerce",
+      summary: "A microservice-based e-commerce platform using Lambdas and DynamoDB",
+      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "API Gateway"],
       outcomes: [
-        "60% reduction in infrastructure costs",
-        "Real-time sentiment analysis",
-        (
-          <span key="monorepo-2">
-            Modular monorepo with <code>npm workspaces</code>
-          </span>
-        ),
+        "Increased conversion rates with a fast, reliable checkout",
+        "Seamless integrations for product catalogs and orders",
+        <span key="monorepo-2">
+          Single repo for front-end, back-end, and shared libraries
+        </span>,
       ],
       details: `
-**Architecture**  
-- Orchestrated a serverless conversation flow using Lambda and Lex.  
-- Integrated with custom AI/NLP models for domain-specific queries.  
-- DynamoDB for session data, logs, and analytics.  
+Architecture
+- Decoupled microservices for orders, inventory, payments, and notifications.
+- AWS Lambda functions orchestrated via API Gateway and event-driven workflows.
+- DynamoDB for product listings, orders, and user sessions.
 
-**Design → CDK Code**  
-- Lex bots, Lambda functions, roles, and DynamoDB tables all declared in AWS CDK.  
-- Fine-tuned for concurrency and cost-effectiveness.  
+Design → CDK Code
+- Each microservice defined in its own CDK stack with clear boundaries.
+- Automated deployments and safe rollbacks through CI/CD pipelines.
+- Scalable to handle holiday traffic spikes without manual intervention.
 
-**Monorepo Setup**  
-- All backend services (Lambda layers, shared libraries) and the front-end components share a single TS codebase.
-- Faster development and deployment cycles, thanks to consistent TypeScript tooling.
+Monorepo Setup
+- Single TypeScript codebase with npm workspaces for shared utilities like authentication, data validation, and logging.
+- Faster development with a unified lint/test pipeline.
 
-**Scalability & Reliability**  
-- Easily handles spikes in traffic with AWS auto-scaling (Lambda + Lex).
-- Microservice approach ensures each function can be updated or deployed independently.
+Scalability & Reliability
+- Auto-scaling Lambda ensures consistent performance even during peak loads.
+- DynamoDB on-demand handles unpredictable traffic surges without overprovisioning.
 
-**How AI Helped**  
-- Custom NLP layering on top of Lex for specialized query understanding.  
-- Automated testing with AI-based user scenario generation.  
+How This Helps
+- Lower operational overhead compared to a traditional server-based approach.
+- Faster feature delivery with microservices, each deployable independently.
       `,
     },
     {
       id: 3,
       title: "Social Media Platform",
-      summary: "Event-driven Micro-Service setup with SQS/SNS and ALBs.",
+      summary: "Event-driven microservices with SQS/SNS and ALBs.",
       technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
       outcomes: [
-        "60% reduction in infrastructure costs",
-        "Real-time sentiment analysis",
-        (
-          <span key="monorepo-3">
-            Modular monorepo with <code>npm workspaces</code>
-          </span>
-        ),
+        "Millisecond response times for user interactions",
+        "Real-time moderation via AI-based content analysis",
+        <span key="monorepo-3">
+          Quick iteration thanks to unified TypeScript code
+        </span>,
       ],
       details: `
-**Architecture**  
-- Real-time data ingestion with Kinesis streams (for streaming user events).  
-- Lambda-based transformations, Glue jobs for deeper ETL.  
-- AI-based anomaly detection with Amazon Lookout for Metrics.  
-- Microservices communicate via SNS/SQS for decoupled event handling.
+Architecture
+- Real-time data ingestion with Kinesis streams (user posts, reactions).
+- Lambda transformations, Glue jobs for analytics.
+- AI-based content checks with Amazon Comprehend or custom NLP.
 
-**Design → CDK Code**  
-- Stacks for Kinesis, Lambda, Glue, SQS, SNS resources.  
-- Pipeline-oriented, fully serverless, easy to scale.  
-- Atomic data updates in S3 and DynamoDB as needed.  
+Design → CDK Code
+- Separate stacks for streaming, analytics, moderation, and user profile services.
+- Fully serverless, easy to scale, minimal ops overhead.
 
-**Monorepo & TypeScript**  
-- Uses npm workspaces to manage shared code among microservices and the front-end.
-- Ensures consistent linting, testing, and type definitions across all modules.
+Monorepo & TypeScript
+- Shared code for data models, validation, and utilities across all services.
+- Consistent linting/testing ensures high quality and maintainability.
 
-**Scalability & High Availability**  
-- Scales to millions of events per day with minimal operational overhead.
-- Serverless approach reduces cost during off-peak hours.
+Scalability & High Availability
+- SQS/SNS for asynchronous communication between microservices.
+- Scales seamlessly to millions of user events with minimal downtime.
 
-**How AI Helped**  
-- Real-time anomaly detection on streaming data, quick insights and alerts.  
-- Automatic detection of unusual behavior or spikes in data.  
+AI-Assisted Moderation
+- Real-time detection of harmful content, spam, or policy violations.
+- Automatic flags or quarantines for manual review.
       `,
     },
   ];
 
-  // Enhanced blog posts
+  // Enhanced blog posts (no ** markers, more content)
   const blogPosts = [
     {
       id: 101,
@@ -167,32 +157,27 @@ export default function Home() {
       snippet:
         "An in-depth look at how AI agents can automate major parts of the serverless development lifecycle...",
       fullContent: `
-# Using AI Agents to Accelerate Serverless POCs
+Using AI Agents to Accelerate Serverless POCs
 
 AI agents can drastically reduce time-to-market by automating:
 - Code generation
 - Testing
 - Infrastructure scaffolding
 
-## Providing Context to the AI Model
-When using GPT-based models for code generation, we need to supply enough context:
-- **Project structure** (e.g., monorepo workspace layout, key dependencies)
-- **Infrastructure details** (CDK constructs, Lambdas, environment variables)
-- **Desired features or end goal** (user scenarios, acceptance criteria)
+Providing Context to the AI Model
+When using GPT-based models for code generation, supply enough detail about:
+- Project structure (monorepo layout, key dependencies)
+- Infrastructure details (CDK constructs, Lambdas, environment variables)
+- Desired features (user stories, acceptance criteria)
 
-**Example Prompt:**
-\`\`\`
-"You are an AI coding assistant. Our project is a monorepo with a 'core' package for shared utils, 
-and multiple Lambda functions under 'services/'. 
-Please create a new Lambda function for the 'billing' service that uses the core utilities to handle payments. 
-We use TypeScript and AWS CDK for deployment. 
-Generate the function code and the CDK stack definitions."
-\`\`\`
+Example Prompt:
+"You are an AI coding assistant. Our project is a monorepo with a 'core' package for shared utilities, 
+and multiple Lambda functions under 'services/'. Please create a new function for the 'billing' service 
+that uses the core utilities. We use TypeScript and AWS CDK. Generate code and stack definitions."
 
-## Construct & Example Blocks
-For instance, we might define a new SNS topic and subscription in CDK:
+Construct & Example Blocks
+For instance, define a new SNS topic and subscription in CDK:
 
-\`\`\`ts
 import { Construct } from 'constructs';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -214,28 +199,23 @@ export class BillingStack extends Construct {
     billingTopic.addSubscription(new LambdaSubscription(billingLambda));
   }
 }
-\`\`\`
 
-## SNS Message Envelope
-When using SNS in a serverless architecture, the AI code generator might also need to format payloads properly:
+SNS Message Envelope
+When using SNS, the Lambda often receives JSON messages:
 
-\`\`\`json
 {
   "Records": [
     {
       "Sns": {
         "MessageId": "abc-123",
-        "Message": "{\\"action\\":\\"chargeUser\\",\\"amount\\":\\"49.99\\"}",
+        "Message": "{\"action\":\"chargeUser\",\"amount\":\"49.99\"}",
         "Timestamp": "2025-01-26T14:30:00.000Z"
       }
     }
   ]
 }
-\`\`\`
 
-**Summary:**
-- By providing context around the code structure and architecture in prompts, we get more relevant AI-generated solutions.
-- AI agents can write code stubs, add new constructs, and handle SNS message envelopes consistently, accelerating the POC phase.
+By providing structured prompts, AI agents can handle these envelopes consistently. This accelerates POC development while keeping best practices intact.
       `,
     },
     {
@@ -244,16 +224,15 @@ When using SNS in a serverless architecture, the AI code generator might also ne
       snippet:
         "Ensuring data consistency and atomic transactions in DynamoDB using the power of AWS CDK...",
       fullContent: `
-# Scaling with AWS CDK & ACID Principles
+Scaling with AWS CDK & ACID Principles
 
 When building large-scale serverless apps, data consistency is crucial.
 
-## DynamoDB Transactions
+DynamoDB Transactions
 - DynamoDB provides ACID transactions for multi-item updates.
-- AWS CDK can easily define tables with transaction support.
+- AWS CDK can define tables with transaction support for robust workflows.
 
-### Example CDK Snippet
-\`\`\`ts
+Example CDK Snippet:
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Table, BillingMode, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
 import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
@@ -265,41 +244,29 @@ const table = new Table(this, 'MyTable', {
   stream: StreamViewType.NEW_AND_OLD_IMAGES,
 });
 
-// Lambda to handle transaction logic
 const transactionLambda = new Function(this, 'TransactionLambda', {
   runtime: Runtime.NODEJS_18_X,
   handler: 'index.handler',
   code: Code.fromAsset('services/transactions/dist'),
 });
 
-// Attach table stream to the Lambda if needed
+// Optional: attach the table stream to the Lambda
 transactionLambda.addEventSource(
   new DynamoEventSource(table, {
     startingPosition: StartingPosition.LATEST,
     batchSize: 5,
   })
 );
-\`\`\`
 
-## Sending Context for AI-Generated Transaction Logic
-When requesting the AI model to generate transaction logic, include:
-- **Table schema** (primary key, sort key, attribute definitions)
-- **Business rules** (atomic updates for multi-step operations, rollbacks)
-- **Expected concurrency** (so the AI can suggest design patterns like optimistic locking if needed)
+Sending Context for AI-Generated Transaction Logic
+When asking an AI model to generate transaction logic, include:
+- Table schema (partition key, sort key, item attributes)
+- Business rules (atomic updates for multi-step ops, possible rollbacks)
+- Expected concurrency levels (so it can suggest patterns like optimistic locking if relevant)
 
-**Prompt Example:**
-\`\`\`
-"We have a table with primary key PK, sort key SK, storing order records. 
-We need a transaction that updates user balances and order status simultaneously. 
-Generate a code snippet in TypeScript for a Lambda that performs ACID updates with 
-DynamoDB's TransactWriteItems."
-\`\`\`
+SNS After Transactions
+Often, a successful transaction triggers an SNS publish. Provide the JSON schema or interface in your prompt so the AI can generate correct publisher and subscriber code:
 
-## SNS Envelopes in Large-Scale Systems
-- For some workflows, you might publish events to SNS after a successful transaction. 
-- Provide your AI model with the JSON schema or interface of the SNS message, so it can generate the correct publisher code and subscriber code.
-
-\`\`\`ts
 await sns.publish({
   TopicArn: billingTopicArn,
   Message: JSON.stringify({
@@ -309,20 +276,16 @@ await sns.publish({
     status: 'CONFIRMED'
   }),
 });
-\`\`\`
 
-**Why ACID?**
-- Guarantees data correctness in multi-step operations
-- Avoids partial updates that lead to inconsistent states
+Why ACID?
+- Ensures correctness in multi-step operations
+- Avoids partial updates, preventing inconsistent states
 - Scales while maintaining strong data integrity
-
-**Conclusion:**
-With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transactions, it’s simpler than ever to build large-scale, highly consistent serverless applications. Proper context to AI agents ensures the generated code adheres to these best practices.
       `,
     },
   ];
 
-  // Helper functions to open/close modals
+  // Modal handlers
   const openProjectModal = (id: number) => setSelectedProjectId(id);
   const closeProjectModal = () => setSelectedProjectId(null);
 
@@ -331,7 +294,7 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
 
   return (
     <div className="bg-[#0C1B2A] text-white min-h-screen w-full flex flex-col">
-      {/* HEADER - Added GitHub/LinkedIn */}
+      {/* HEADER */}
       <header className="w-full py-4 px-8 flex items-center justify-between bg-[#0C1B2A]">
         <nav className="flex gap-4">
           <a href="#home" className="hover:underline">Home</a>
@@ -360,14 +323,15 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
         </div>
       </header>
 
-      {/* ENHANCED HERO SECTION */}
+      {/* HERO */}
       <section id="home" className="px-8 py-20 sm:py-32">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
             Serverless AWS Architect
           </h1>
           <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Helping startups build scalable, cost-effective infrastructure with AWS CDK and AI-powered development
+            Helping startups build scalable, cost-effective infrastructure with AWS CDK and AI-powered development.
+            Trusted by top organizations such as WEF, Vodafone, and L'Oréal.
           </p>
           <div className="flex justify-center gap-4">
             <a
@@ -386,7 +350,7 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
         </div>
       </section>
 
-      {/* NEW SERVICES SECTION */}
+      {/* SERVICES */}
       <section id="services" className="px-8 py-16 bg-[#0F2233]">
         <h2 className="text-3xl font-bold mb-12 text-center">Specialized Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -411,7 +375,7 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
         </div>
       </section>
 
-      {/* ENHANCED PORTFOLIO SECTION */}
+      {/* PORTFOLIO */}
       <section id="portfolio" className="px-8 py-16 bg-[#0C1B2A]">
         <h2 className="text-3xl font-bold mb-12 text-center">Featured Work</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -453,7 +417,7 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
         </div>
       </section>
 
-      {/* ENHANCED BLOG SECTION */}
+      {/* BLOG */}
       <section id="blog" className="px-8 py-16 bg-[#0F2233]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-12 text-center">Technical Insights</h2>
@@ -488,7 +452,7 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
+      {/* CONTACT */}
       <section id="contact" className="px-8 py-16 bg-[#0F2233]">
         <h2 className="text-3xl font-bold mb-8 text-center">Get in Touch</h2>
         <div className="max-w-xl mx-auto">
@@ -496,7 +460,6 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
             If you’d like to discuss potential collaboration, feel free to drop
             a message below or reach out via LinkedIn/GitHub.
           </p>
-          {/* Simple contact form (no actual submission logic here) */}
           <form className="flex flex-col gap-4">
             <input
               type="text"
@@ -545,7 +508,6 @@ With AWS CDK’s straightforward table definitions and DynamoDB’s ACID transac
               .map((p) => (
                 <div key={`modal-project-${p.id}`} className="overflow-y-auto max-h-[80vh] pr-2">
                   <h3 className="text-2xl font-bold mb-4">{p.title}</h3>
-                  {/* You could parse Markdown here if desired, or just show text */}
                   <div className="prose prose-invert text-sm whitespace-pre-wrap">
                     {p.details}
                   </div>
