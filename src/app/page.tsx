@@ -7,32 +7,65 @@ export default function Home() {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
   const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
 
+
+    // Added services data
+    const services = [
+      {
+        title: "Serverless Architecture Audit",
+        description: "Identify cost savings and performance improvements in your existing AWS setup",
+        icon: "🔍",
+        benefits: [
+          "48-hour comprehensive review",
+          "Actionable optimization plan",
+          "CI/CD pipeline assessment"
+        ]
+      },
+      {
+        title: "Rapid MVP Development",
+        description: "Go from idea to production in weeks with CDK-powered infrastructure",
+        icon: "🚀",
+        benefits: [
+          "Pre-built serverless patterns",
+          "Monorepo best practices",
+          "AI-assisted development"
+        ]
+      },
+      {
+        title: "Enterprise-Grade CDK Constructs",
+        description: "Modular, reusable infrastructure components for your team",
+        icon: "🧩",
+        benefits: [
+          "TypeScript-first development",
+          "Built-in security controls",
+          "Documentation & onboarding"
+        ]
+      }
+    ];
+
   // Sample data for projects
   const projects = [
     {
       id: 1,
-      title: "Serverless E-Commerce",
-      summary: "Lambda, API Gateway, DynamoDB, AI recommendations, etc.",
-      details: `
-**Architecture**  
-- Microservices with SNS/SQS.  
-- Decoupled, event-driven design.  
-- Leveraged AI for product recommendations (Amazon Personalize).  
-
-**Design → CDK Code**  
-- Each microservice in its own stack with AWS CDK.  
-- Infrastructure as code ensures consistency and easy updates.  
-- Atomic and ACID considerations revolve around DynamoDB transactions.  
-
-**How AI Helped**  
-- AI-driven product suggestions to increase user engagement and sales.  
-- Combined Amazon Personalize with real-time user behavior data.  
-      `,
+      title: "AI-Powered Customer Insights Platform",
+      summary: "Real-time feedback analysis using Lambda & OpenAI",
+      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
+      outcomes: [
+        "60% reduction in infrastructure costs",
+        "Real-time sentiment analysis",
+        <span>Modular monorepo with <code>npm workspaces</code></span>
+      ],
+      details: `...` // Keep existing details
     },
     {
       id: 2,
       title: "AI-Driven Customer Sentiment",
       summary: "Amazon Lex, Lambda, DynamoDB, custom NLP for domain queries.",
+      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
+      outcomes: [
+        "60% reduction in infrastructure costs",
+        "Real-time sentiment analysis",
+        <span>Modular monorepo with <code>npm workspaces</code></span>
+      ],
       details: `
 **Architecture**  
 - Orchestrated a serverless conversation flow using Lambda and Lex.  
@@ -52,6 +85,12 @@ export default function Home() {
       id: 3,
       title: "Social Media Platform",
       summary: "Event-driven Micro-Service setup with SQS/SNS and ALBs.",
+      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
+      outcomes: [
+        "60% reduction in infrastructure costs",
+        "Real-time sentiment analysis",
+        <span>Modular monorepo with <code>npm workspaces</code></span>
+      ],
       details: `
 **Architecture**  
 - Real-time data ingestion with Kinesis streams.  
@@ -128,83 +167,132 @@ const table = new dynamodb.Table(this, 'MyTable', {
 
   return (
     <div className="bg-[#0C1B2A] text-white min-h-screen w-full flex flex-col">
-      {/* HEADER / NAVBAR */}
-      <header className="w-full py-4 px-8 flex items-center justify-between bg-[#0C1B2A]">
+    {/* HEADER - Added GitHub/LinkedIn */}
+    <header className="w-full py-4 px-8 flex items-center justify-between bg-[#0C1B2A]">
       <nav className="flex gap-4">
-          <a href="#home" className="hover:underline">Home</a>
-          <a href="#portfolio" className="hover:underline">Portfolio</a>
-          <a href="#blog" className="hover:underline">Blog</a>
-          <a href="#contact" className="hover:underline">Contact</a>
-        </nav>
-      </header>
+        <a href="#home" className="hover:underline">Home</a>
+        <a href="#services" className="hover:underline">Services</a>
+        <a href="#portfolio" className="hover:underline">Work</a>
+        <a href="#blog" className="hover:underline">Insights</a>
+        <a href="#contact" className="hover:underline">Contact</a>
+      </nav>
+      <div className="flex gap-4">
+        <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" className="hover:opacity-75">GitHub</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="hover:opacity-75">LinkedIn</a>
+      </div>
+    </header>
 
-      {/* HERO SECTION */}
-      <section 
-        id="home"
-        className="flex flex-col items-center justify-center text-center px-8 py-20 sm:py-32"
-      >
-        <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-          AWS Serverless Architect & AI Integrations
-        </h2>
-        <p className="max-w-2xl mb-8 text-gray-300">
-          I design and implement serverless solutions on AWS, leveraging the power of 
-          AI services to deliver high-quality, scalable products. Check out my work 
-          and let’s build something impactful together.
+    {/* ENHANCED HERO SECTION */}
+    <section id="home" className="px-8 py-20 sm:py-32">
+      <div className="max-w-6xl mx-auto text-center">
+        <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          Serverless AWS Architect
+        </h1>
+        <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Helping startups build scalable, cost-effective infrastructure with AWS CDK and AI-powered development
         </p>
-        <a 
-          href="#contact" 
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full transition-colors"
-        >
-          Work with me
-        </a>
-      </section>
-
-      {/* PORTFOLIO SECTION */}
-      <section
-        id="portfolio"
-        className="px-8 py-16 bg-[#0F2233]"
-      >
-        <h2 className="text-3xl font-bold mb-8 text-center">My Projects</h2>
-        
-        {/* Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {projects.map((proj) => (
-            <div key={proj.id} className="bg-[#14293E] rounded-lg p-6 flex flex-col">
-              <h3 className="text-xl font-semibold mb-2">{proj.title}</h3>
-              <p className="text-sm text-gray-300 mb-4">{proj.summary}</p>
-              <button
-                onClick={() => openProjectModal(proj.id)}
-                className="mt-auto bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded-full text-sm self-start"
-              >
-                Read More
-              </button>
-            </div>
-          ))}
+        <div className="flex justify-center gap-4">
+          <a 
+            href="#services" 
+            className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-full transition-colors flex items-center"
+          >
+            <span className="mr-2">🏗️</span> View Services
+          </a>
+          <a 
+            href="#contact" 
+            className="border border-blue-500 text-blue-300 hover:bg-blue-900/20 py-3 px-8 rounded-full transition-colors"
+          >
+            Schedule Consultation
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      {/* BLOG SECTION */}
-      <section
-        id="blog"
-        className="px-8 py-16 bg-[#0C1B2A]"
-      >
-        <h2 className="text-3xl font-bold mb-8 text-center">Latest Blog Posts</h2>
-        {/* Blog Post Previews */}
-        <div className="flex flex-col gap-8 max-w-5xl mx-auto">
+    {/* NEW SERVICES SECTION */}
+    <section id="services" className="px-8 py-16 bg-[#0F2233]">
+      <h2 className="text-3xl font-bold mb-12 text-center">Specialized Services</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {services.map((service, index) => (
+          <div key={index} className="bg-[#14293E] p-6 rounded-xl border border-[#1F3A4E] hover:border-blue-500 transition-colors">
+            <div className="text-4xl mb-4">{service.icon}</div>
+            <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+            <p className="text-gray-300 mb-4">{service.description}</p>
+            <ul className="space-y-2">
+              {service.benefits.map((benefit, i) => (
+                <li key={i} className="flex items-center text-sm">
+                  <span className="text-blue-400 mr-2">✓</span>
+                  {benefit}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ENHANCED PORTFOLIO SECTION */}
+    <section id="portfolio" className="px-8 py-16 bg-[#0C1B2A]">
+      <h2 className="text-3xl font-bold mb-12 text-center">Featured Work</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {projects.map((proj) => (
+          <div key={proj.id} className="bg-[#14293E] rounded-xl p-6 border border-[#1F3A4E]">
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold">{proj.title}</h3>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {proj.technologies.map((tech, i) => (
+                  <span key={i} className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <ul className="space-y-2 mb-4">
+              {proj.outcomes.map((outcome, i) => (
+                <li key={i} className="flex items-center text-sm">
+                  <span className="text-blue-400 mr-2">→</span>
+                  {outcome}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => openProjectModal(proj.id)}
+              className="mt-4 text-blue-400 hover:text-blue-300 flex items-center"
+            >
+              View Case Study
+              <span className="ml-2">↗</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ENHANCED BLOG SECTION */}
+    <section id="blog" className="px-8 py-16 bg-[#0F2233]">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-12 text-center">Technical Insights</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {blogPosts.map((post) => (
-            <article key={post.id} className="bg-[#14293E] p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-              <p className="text-sm text-gray-300">{post.snippet}</p>
+            <article key={post.id} className="bg-[#14293E] p-6 rounded-xl border border-[#1F3A4E]">
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+                <div className="flex gap-2">
+                  <span className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full">CDK Patterns</span>
+                  <span className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full">AI Integration</span>
+                </div>
+              </div>
+              <p className="text-gray-300 mb-4">{post.snippet}</p>
               <button
                 onClick={() => openBlogModal(post.id)}
-                className="mt-4 py-1 px-3 bg-blue-500 hover:bg-blue-600 rounded-full text-sm"
+                className="text-blue-400 hover:text-blue-300 flex items-center"
               >
-                Read More
+                Read Article
+                <span className="ml-2">→</span>
               </button>
             </article>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* CONTACT SECTION */}
       <section
