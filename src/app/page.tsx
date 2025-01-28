@@ -42,7 +42,7 @@ export default function Home() {
     },
   ];
 
-  // Projects (Changed #2 to Serverless E-commerce, plus varied outcomes)
+  // Projects
   const projects = [
     {
       id: 1,
@@ -149,7 +149,7 @@ AI-Assisted Moderation
     },
   ];
 
-  // Enhanced blog posts (no ** markers, more content)
+  // Blog Posts
   const blogPosts = [
     {
       id: 101,
@@ -294,18 +294,23 @@ Why ACID?
 
   return (
     <div className="bg-[#0C1B2A] text-white min-h-screen w-full flex flex-col">
-      {/* HEADER */}
-      <header className="w-full py-4 px-8 flex items-center justify-between bg-[#0C1B2A]">
-        <nav className="flex gap-4">
+      {/* HEADER 
+          Make the header responsive with flex-col on small screens
+          so the nav & social links won't overflow horizontally */}
+      <header className="w-full py-4 px-8 bg-[#0C1B2A] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Nav Links (wrap if needed) */}
+        <nav className="flex flex-wrap gap-4">
           <a href="#home" className="hover:underline">Home</a>
           <a href="#services" className="hover:underline">Services</a>
           <a href="#portfolio" className="hover:underline">Work</a>
           <a href="#blog" className="hover:underline">Insights</a>
           <a href="#contact" className="hover:underline">Contact</a>
         </nav>
-        <div className="flex gap-4">
+
+        {/* Social Links */}
+        <div className="flex flex-wrap gap-4">
           <a
-            href="https://github.com/yourprofile"
+            href="https://github.com/huncrew"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-75"
@@ -313,7 +318,7 @@ Why ACID?
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/yourprofile"
+            href="https://linkedin.com/in/dalebgrant"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-75"
@@ -506,7 +511,10 @@ Why ACID?
             {projects
               .filter((p) => p.id === selectedProjectId)
               .map((p) => (
-                <div key={`modal-project-${p.id}`} className="overflow-y-auto max-h-[80vh] pr-2">
+                <div
+                  key={`modal-project-${p.id}`}
+                  className="overflow-y-auto max-h-[80vh] pr-2"
+                >
                   <h3 className="text-2xl font-bold mb-4">{p.title}</h3>
                   <div className="prose prose-invert text-sm whitespace-pre-wrap">
                     {p.details}
@@ -530,7 +538,10 @@ Why ACID?
             {blogPosts
               .filter((b) => b.id === selectedBlogId)
               .map((b) => (
-                <div key={`modal-blog-${b.id}`} className="overflow-y-auto max-h-[80vh] pr-2">
+                <div
+                  key={`modal-blog-${b.id}`}
+                  className="overflow-y-auto max-h-[80vh] pr-2"
+                >
                   <h3 className="text-2xl font-bold mb-4">{b.title}</h3>
                   <div className="prose prose-invert text-sm whitespace-pre-wrap">
                     {b.fullContent}
