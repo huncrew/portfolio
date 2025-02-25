@@ -335,7 +335,7 @@ Why ACID?
             AWS Architect
           </h1>
           <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Helping companies build scalable, cost-effective infrastructure with AWS CDK and AI-powered development.
+            Helping companies build scalable, cost-effective infrastructure with AWS IaC and AI-powered development.
             Trusted by top organizations such as WEF, Vodafone, and L'Oréal.
           </p>
           <div className="flex justify-center gap-4">
