@@ -8,9 +8,9 @@ export default function Home() {
   // Services
   const services = [
     {
-      title: "Serverless Architecture Audit",
+      title: "Monolith -> Microservices",
       description:
-        "Identify cost savings and performance improvements in your existing AWS setup",
+        "Upgrade your monolith to a microservices architecture with AWS IaC",
       icon: "🔍",
       benefits: [
         "48-hour comprehensive review",
@@ -19,9 +19,9 @@ export default function Home() {
       ],
     },
     {
-      title: "Rapid MVP Development",
+      title: "Rapid POC Development",
       description:
-        "Go from idea to production in weeks with CDK-powered infrastructure",
+        "Go from idea to production in weeks with IaC-powered infrastructure",
       icon: "🚀",
       benefits: [
         "Pre-built serverless patterns",
@@ -332,10 +332,10 @@ Why ACID?
       <section id="home" className="px-8 py-20 sm:py-32">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Serverless AWS Architect
+            AWS Architect
           </h1>
           <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Helping startups build scalable, cost-effective infrastructure with AWS CDK and AI-powered development.
+            Helping companies build scalable, cost-effective infrastructure with AWS CDK and AI-powered development.
             Trusted by top organizations such as WEF, Vodafone, and L'Oréal.
           </p>
           <div className="flex justify-center gap-4">
