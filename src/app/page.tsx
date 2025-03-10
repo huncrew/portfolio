@@ -332,7 +332,7 @@ Why ACID?
       <section id="home" className="px-8 py-20 sm:py-32">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            AWS Architect
+          AWS Cloud Engineer | DevOps | Solutions Architect
           </h1>
           <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
             Helping companies build scalable, cost-effective infrastructure with AWS IaC and AI-powered development.
