@@ -280,7 +280,7 @@ await sns.publish({
 Why ACID?
 - Ensures correctness in multi-step operations
 - Avoids partial updates, preventing inconsistent states
-- Scales while maintaining strong data integrity
+- Scales while maintaining strong data integrity.
       `,
     },
   ];
