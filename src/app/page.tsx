@@ -131,7 +131,7 @@ const portfolioProjects = [
     subtitle: "AI Builder Platform",
     description:
       "No-code AI application builder enabling rapid deployment of custom AI workflows, chatbots, and automation systems with enterprise-grade security and scalability.",
-    url: "https://oasify.com",
+    url: "https://oasify.ai",
     gradient: "from-blue-500 to-indigo-500",
     features: [
       "No-Code AI Builder",
