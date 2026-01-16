@@ -1,556 +1,916 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  ChevronDown,
+  Cpu,
+  Workflow,
+  Database,
+  Cloud,
+  Bot,
+  Zap,
+  Shield,
+  BarChart3,
+  MessageSquare,
+  Play,
+  X,
+} from "lucide-react";
 
-export default function Home() {
-  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
-  const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
-
-  // Services
-  const services = [
-    {
-      title: "Monolith -> Microservices",
-      description:
-        "Upgrade your monolith to a microservices architecture with AWS IaC",
-      icon: "🔍",
-      benefits: [
-        "48-hour comprehensive review",
-        "Actionable optimization plan",
-        "CI/CD pipeline assessment",
-      ],
-    },
-    {
-      title: "Rapid POC Development",
-      description:
-        "Go from idea to production in weeks with IaC-powered infrastructure",
-      icon: "🚀",
-      benefits: [
-        "Pre-built serverless patterns",
-        "Monorepo best practices",
-        "AI-assisted development",
-      ],
-    },
-    {
-      title: "Enterprise-Grade CDK Constructs",
-      description:
-        "Modular, reusable infrastructure components for your team",
-      icon: "🧩",
-      benefits: [
-        "TypeScript-first development",
-        "Built-in security controls",
-        "Documentation & onboarding",
-      ],
-    },
-  ];
-
-  // Projects
-  const projects = [
-    {
-      id: 1,
-      title: "AI-Powered Customer Insights Platform",
-      summary: "Real-time feedback analysis using Lambda & OpenAI",
-      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
-      outcomes: [
-        "Reduced monthly infrastructure spend by 40%",
-        "Immediate insight into user satisfaction",
-        <span key="monorepo-1">
-          Modular monorepo with <code>npm workspaces</code>
-        </span>,
-      ],
-      details: `
-Monorepo Setup
-- Using TypeScript across all services for consistency and reusability.
-- Lambda functions, React front-end, and shared libraries in one repo (npm workspaces).
-- Streamlined deployments and easy local testing.
-
-Microservices & Scalability
-- Each business capability is a separate Lambda-based microservice.
-- Uses AWS CDK for all resources, allowing quick adjustments and simplified stack management.
-- Scales to millions of users with auto-scaling Lambda, DynamoDB on-demand, and S3 hosting.
-
-AI Integration
-- Leverages OpenAI's APIs for real-time sentiment analysis.
-- Delivers continuous insights into user feedback and product performance.
-
-Results
-- Maintained high user satisfaction through data-driven decisions.
-- Codebase is highly maintainable due to monorepo approach, consistent TypeScript usage, and CDK best practices.
-      `,
-    },
-    {
-      id: 2,
-      title: "Serverless E-commerce",
-      summary: "A microservice-based e-commerce platform using Lambdas and DynamoDB",
-      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "API Gateway"],
-      outcomes: [
-        "Increased conversion rates with a fast, reliable checkout",
-        "Seamless integrations for product catalogs and orders",
-        <span key="monorepo-2">
-          Single repo for front-end, back-end, and shared libraries
-        </span>,
-      ],
-      details: `
-Architecture
-- Decoupled microservices for orders, inventory, payments, and notifications.
-- AWS Lambda functions orchestrated via API Gateway and event-driven workflows.
-- DynamoDB for product listings, orders, and user sessions.
-
-Design → CDK Code
-- Each microservice defined in its own CDK stack with clear boundaries.
-- Automated deployments and safe rollbacks through CI/CD pipelines.
-- Scalable to handle holiday traffic spikes without manual intervention.
-
-Monorepo Setup
-- Single TypeScript codebase with npm workspaces for shared utilities like authentication, data validation, and logging.
-- Faster development with a unified lint/test pipeline.
-
-Scalability & Reliability
-- Auto-scaling Lambda ensures consistent performance even during peak loads.
-- DynamoDB on-demand handles unpredictable traffic surges without overprovisioning.
-
-How This Helps
-- Lower operational overhead compared to a traditional server-based approach.
-- Faster feature delivery with microservices, each deployable independently.
-      `,
-    },
-    {
-      id: 3,
-      title: "Social Media Platform",
-      summary: "Event-driven microservices with SQS/SNS and ALBs.",
-      technologies: ["CDK", "TypeScript", "DynamoDB", "React", "OpenAI API"],
-      outcomes: [
-        "Millisecond response times for user interactions",
-        "Real-time moderation via AI-based content analysis",
-        <span key="monorepo-3">
-          Quick iteration thanks to unified TypeScript code
-        </span>,
-      ],
-      details: `
-Architecture
-- Real-time data ingestion with Kinesis streams (user posts, reactions).
-- Lambda transformations, Glue jobs for analytics.
-- AI-based content checks with Amazon Comprehend or custom NLP.
-
-Design → CDK Code
-- Separate stacks for streaming, analytics, moderation, and user profile services.
-- Fully serverless, easy to scale, minimal ops overhead.
-
-Monorepo & TypeScript
-- Shared code for data models, validation, and utilities across all services.
-- Consistent linting/testing ensures high quality and maintainability.
-
-Scalability & High Availability
-- SQS/SNS for asynchronous communication between microservices.
-- Scales seamlessly to millions of user events with minimal downtime.
-
-AI-Assisted Moderation
-- Real-time detection of harmful content, spam, or policy violations.
-- Automatic flags or quarantines for manual review.
-      `,
-    },
-  ];
-
-  // Blog Posts
-  const blogPosts = [
-    {
-      id: 101,
-      title: "Using AI Agents to Accelerate Serverless POCs",
-      snippet:
-        "An in-depth look at how AI agents can automate major parts of the serverless development lifecycle...",
-      fullContent: `
-Using AI Agents to Accelerate Serverless POCs
-
-AI agents can drastically reduce time-to-market by automating:
-- Code generation
-- Testing
-- Infrastructure scaffolding
-
-Providing Context to the AI Model
-When using GPT-based models for code generation, supply enough detail about:
-- Project structure (monorepo layout, key dependencies)
-- Infrastructure details (CDK constructs, Lambdas, environment variables)
-- Desired features (user stories, acceptance criteria)
-
-Example Prompt:
-"You are an AI coding assistant. Our project is a monorepo with a 'core' package for shared utilities, 
-and multiple Lambda functions under 'services/'. Please create a new function for the 'billing' service 
-that uses the core utilities. We use TypeScript and AWS CDK. Generate code and stack definitions."
-
-Construct & Example Blocks
-For instance, define a new SNS topic and subscription in CDK:
-
-import { Construct } from 'constructs';
-import { Topic } from 'aws-cdk-lib/aws-sns';
-import { LambdaSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
-import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
-
-export class BillingStack extends Construct {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-
-    const billingTopic = new Topic(this, 'BillingTopic');
-
-    const billingLambda = new Function(this, 'BillingLambda', {
-      runtime: Runtime.NODEJS_18_X,
-      handler: 'index.handler',
-      code: Code.fromAsset('services/billing/dist'),
-    });
-
-    // Let SNS invoke the Lambda
-    billingTopic.addSubscription(new LambdaSubscription(billingLambda));
-  }
-}
-
-SNS Message Envelope
-When using SNS, the Lambda often receives JSON messages:
-
-{
-  "Records": [
-    {
-      "Sns": {
-        "MessageId": "abc-123",
-        "Message": "{\"action\":\"chargeUser\",\"amount\":\"49.99\"}",
-        "Timestamp": "2025-01-26T14:30:00.000Z"
-      }
-    }
-  ]
-}
-
-By providing structured prompts, AI agents can handle these envelopes consistently. This accelerates POC development while keeping best practices intact.
-      `,
-    },
-    {
-      id: 102,
-      title: "Scaling with AWS CDK & ACID Principles",
-      snippet:
-        "Ensuring data consistency and atomic transactions in DynamoDB using the power of AWS CDK...",
-      fullContent: `
-Scaling with AWS CDK & ACID Principles
-
-When building large-scale serverless apps, data consistency is crucial.
-
-DynamoDB Transactions
-- DynamoDB provides ACID transactions for multi-item updates.
-- AWS CDK can define tables with transaction support for robust workflows.
-
-Example CDK Snippet:
-import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
-import { Table, BillingMode, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
-import { Function, Runtime, Code } from 'aws-cdk-lib/aws-lambda';
-
-const table = new Table(this, 'MyTable', {
-  partitionKey: { name: 'PK', type: AttributeType.STRING },
-  sortKey: { name: 'SK', type: AttributeType.STRING },
-  billingMode: BillingMode.PAY_PER_REQUEST,
-  stream: StreamViewType.NEW_AND_OLD_IMAGES,
-});
-
-const transactionLambda = new Function(this, 'TransactionLambda', {
-  runtime: Runtime.NODEJS_18_X,
-  handler: 'index.handler',
-  code: Code.fromAsset('services/transactions/dist'),
-});
-
-// Optional: attach the table stream to the Lambda
-transactionLambda.addEventSource(
-  new DynamoEventSource(table, {
-    startingPosition: StartingPosition.LATEST,
-    batchSize: 5,
-  })
+// Animated background component
+const AnimatedBackground = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
+    <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
+    <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl animate-pulse delay-500" />
+  </div>
 );
 
-Sending Context for AI-Generated Transaction Logic
-When asking an AI model to generate transaction logic, include:
-- Table schema (partition key, sort key, item attributes)
-- Business rules (atomic updates for multi-step ops, possible rollbacks)
-- Expected concurrency levels (so it can suggest patterns like optimistic locking if relevant)
+// Floating particles
+const Particles = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
+        initial={{
+          x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
+          y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
+        }}
+        animate={{
+          y: [null, -20, 20],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{
+          duration: 3 + Math.random() * 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: Math.random() * 2,
+        }}
+      />
+    ))}
+  </div>
+);
 
-SNS After Transactions
-Often, a successful transaction triggers an SNS publish. Provide the JSON schema or interface in your prompt so the AI can generate correct publisher and subscriber code:
+// Glass card component
+const GlassCard = ({
+  children,
+  className = "",
+  hover = true,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  hover?: boolean;
+}) => (
+  <motion.div
+    whileHover={hover ? { scale: 1.02, y: -4 } : {}}
+    className={`relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden ${className}`}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+    <div className="relative z-10">{children}</div>
+  </motion.div>
+);
 
-await sns.publish({
-  TopicArn: billingTopicArn,
-  Message: JSON.stringify({
-    action: 'orderCompleted',
-    userId: '123',
-    orderId: 'ABC',
-    status: 'CONFIRMED'
-  }),
-});
+// Portfolio project data
+const portfolioProjects = [
+  {
+    id: "cloudops",
+    title: "CloudOps Agent Studio",
+    subtitle: "Agentic AWS Infrastructure Management",
+    description:
+      "Multi-agent platform orchestrating Well-Architected reviews, cost optimization, and AI workflow design. Features LangGraph + Bedrock orchestration with automated Terraform generation.",
+    url: "https://ai.agents.dalegrant.dev",
+    gradient: "from-cyan-500 to-emerald-500",
+    features: [
+      "Well-Architected Advisor",
+      "Cost Strategist Agent",
+      "AI Workflow Designer",
+      "Automated IaC Generation",
+    ],
+    tech: ["AWS Bedrock", "LangGraph", "Lambda", "DynamoDB", "Terraform"],
+  },
+  {
+    id: "finance",
+    title: "MLOps Finance Platform",
+    subtitle: "Regulatory Compliance RAG System",
+    description:
+      "Enterprise RAG platform for financial document intelligence. Automated compliance monitoring against Basel III, GDPR, SOX with real-time risk scoring and natural language queries.",
+    url: "https://ai.finance.dalegrant.dev",
+    gradient: "from-purple-500 to-pink-500",
+    features: [
+      "Document Intelligence",
+      "Multi-Framework Compliance",
+      "Knowledge Base RAG",
+      "Real-time Monitoring",
+    ],
+    tech: ["AWS SageMaker", "Vector Stores", "FAISS", "LlamaIndex", "S3"],
+  },
+  {
+    id: "marketing",
+    title: "AI Marketing Automation",
+    subtitle: "Intelligent Campaign Orchestration",
+    description:
+      "End-to-end marketing automation platform with AI-driven content generation, audience segmentation, and campaign optimization using real-time analytics and predictive modeling.",
+    url: "https://ai.marketing.dalegrant.dev",
+    gradient: "from-orange-500 to-red-500",
+    features: [
+      "AI Content Generation",
+      "Audience Segmentation",
+      "Campaign Optimization",
+      "Predictive Analytics",
+    ],
+    tech: ["AWS Bedrock", "EventBridge", "Lambda", "DynamoDB", "OpenAI"],
+  },
+  {
+    id: "oasify",
+    title: "Oasify",
+    subtitle: "AI Builder Platform",
+    description:
+      "No-code AI application builder enabling rapid deployment of custom AI workflows, chatbots, and automation systems with enterprise-grade security and scalability.",
+    url: "https://oasify.com",
+    gradient: "from-blue-500 to-indigo-500",
+    features: [
+      "No-Code AI Builder",
+      "Custom Workflows",
+      "Enterprise Security",
+      "Rapid Deployment",
+    ],
+    tech: ["React", "AWS", "Serverless", "AI/ML", "Real-time"],
+  },
+];
 
-Why ACID?
-- Ensures correctness in multi-step operations
-- Avoids partial updates, preventing inconsistent states
-- Scales while maintaining strong data integrity.
-      `,
-    },
-  ];
+// Experience timeline data
+const experience = [
+  {
+    period: "2025 - Present",
+    title: "Principal AI Systems Architect",
+    company: "Self-employed",
+    type: "Independent Consultant",
+    highlights: [
+      "Real-time media analysis pipelines (live streaming, low-latency)",
+      "Live transcription & translation systems (AWS Transcribe/Translate)",
+      "ML model training & fine-tuning (SageMaker, distillation)",
+      "Agent-based CloudOps & security automation",
+      "RAG, semantic search, vector pipelines (FAISS, LlamaIndex)",
+    ],
+  },
+  {
+    period: "2024 - 2025",
+    title: "Lead AI / GenAI Architect",
+    company: "ROCK",
+    type: "Contract",
+    highlights: [
+      "AI-powered contact centre for government customers",
+      "Multi-tenant, low-latency architectures",
+      "Voice agents & knowledge-base assistants",
+      "Model fine-tuning & pre-training",
+      "Regulated, security-sensitive environments",
+    ],
+  },
+  {
+    period: "2022 - 2024",
+    title: "AI Systems Architect / AWS Architect",
+    company: "Chakray Consulting",
+    type: "Contract",
+    highlights: [
+      "AI-driven serverless platforms (finance & government)",
+      "RAG pipelines & semantic search systems",
+      "Real-time event-driven finance systems",
+      "Government contract experience",
+    ],
+  },
+  {
+    period: "2021 - 2022",
+    title: "AI Solutions Architect",
+    company: "World Economic Forum",
+    type: "Contract",
+    highlights: [
+      "AI-driven workflow automation",
+      "Developer productivity tooling",
+      "AI-assisted coding pipelines",
+      "Architecture leadership",
+    ],
+  },
+  {
+    period: "2016 - 2021",
+    title: "AI / AWS Architect",
+    company: "Accenture",
+    type: "Full-time",
+    highlights: [
+      "Customer-service AI agents for L'Oréal & Vodafone",
+      "Voice-based AI agents & conversational workflows",
+      "Logistics systems (routing, orchestration)",
+      "E-commerce automation (Shopify integrations)",
+    ],
+  },
+];
 
-  // Modal handlers
-  const openProjectModal = (id: number) => setSelectedProjectId(id);
-  const closeProjectModal = () => setSelectedProjectId(null);
+// Client logos (using text for now, can be replaced with actual logos)
+const clients = [
+  { name: "Formula 1", abbrev: "F1" },
+  { name: "Vodafone", abbrev: "Vodafone" },
+  { name: "L'Oréal", abbrev: "L'Oréal" },
+  { name: "World Economic Forum", abbrev: "WEF" },
+  { name: "Accenture", abbrev: "Accenture" },
+  { name: "UK Government", abbrev: "Gov.UK" },
+];
 
-  const openBlogModal = (id: number) => setSelectedBlogId(id);
-  const closeBlogModal = () => setSelectedBlogId(null);
+// Expertise areas
+const expertise = [
+  {
+    icon: Bot,
+    title: "Agentic AI Systems",
+    description:
+      "Multi-agent orchestration with LangGraph, Bedrock, and custom frameworks for autonomous decision-making",
+  },
+  {
+    icon: Workflow,
+    title: "Real-time Pipelines",
+    description:
+      "Low-latency streaming, live transcription/translation, and event-driven architectures at scale",
+  },
+  {
+    icon: Database,
+    title: "RAG & Vector Search",
+    description:
+      "Semantic search, knowledge bases, and retrieval-augmented generation with FAISS, LlamaIndex",
+  },
+  {
+    icon: Cloud,
+    title: "AWS Architecture",
+    description:
+      "Serverless, event-driven systems using Lambda, Bedrock, SageMaker, Connect, and CDK",
+  },
+  {
+    icon: Shield,
+    title: "Enterprise Security",
+    description:
+      "Security-first design for regulated industries, government contracts, and compliance requirements",
+  },
+  {
+    icon: Zap,
+    title: "ML Operations",
+    description:
+      "Model training, fine-tuning, distillation, and production deployment with SageMaker",
+  },
+];
+
+export default function Home() {
+  const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const selectedProject = portfolioProjects.find((p) => p.id === activeProject);
 
   return (
-    <div className="bg-[#0C1B2A] text-white min-h-screen w-full flex flex-col">
-      {/* HEADER 
-          Make the header responsive with flex-col on small screens
-          so the nav & social links won't overflow horizontally */}
-      <header className="w-full py-4 px-8 bg-[#0C1B2A] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {/* Nav Links (wrap if needed) */}
-        <nav className="flex flex-wrap gap-4">
-          <a href="#home" className="hover:underline">Home</a>
-          <a href="#services" className="hover:underline">Services</a>
-          <a href="#portfolio" className="hover:underline">Work</a>
-          <a href="#blog" className="hover:underline">Insights</a>
-          <a href="#contact" className="hover:underline">Contact</a>
-        </nav>
+    <div className="bg-slate-950 text-white min-h-screen overflow-x-hidden">
+      <AnimatedBackground />
+      <Particles />
 
-        {/* Social Links */}
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="https://github.com/huncrew"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-75"
+      {/* Navigation */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/10"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"
           >
-            GitHub
-          </a>
-          <a
-            href="https://linkedin.com/in/dalebgrant"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-75"
-          >
-            LinkedIn 
-          </a>
-        </div> 
-      </header>
-
-      {/* HERO */}
-      <section id="home" className="px-8 py-20 sm:py-32">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          AWS SA | DevOps
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Helping companies build scalable, cost-effective infrastructure with AWS IaC and AI-powered development.
-            Trusted by top organizations such as WEF, Vodafone, and L'Oréal.
-          </p>
-          <div className="flex justify-center gap-4">
+            Dale Grant
+          </motion.div>
+          <div className="hidden md:flex items-center gap-8">
+            {["Expertise", "Portfolio", "Experience", "Contact"].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-4">
             <a
-              href="#services"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-full transition-colors flex items-center"
+              href="https://github.com/huncrew"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
             >
-              <span className="mr-2">🏗️</span> View Services
+              <Github size={20} />
+            </a>
+            <a
+              href="https://linkedin.com/in/dalebgrant"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <Linkedin size={20} />
             </a>
             <a
               href="#contact"
-              className="border border-blue-500 text-blue-300 hover:bg-blue-900/20 py-3 px-8 rounded-full transition-colors"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
             >
-              Schedule Consultation
+              Let&apos;s Talk <ArrowRight size={16} />
             </a>
           </div>
         </div>
-      </section>
+      </motion.nav>
 
-      {/* SERVICES */}
-      <section id="services" className="px-8 py-16 bg-[#0F2233]">
-        <h2 className="text-3xl font-bold mb-12 text-center">Specialized Services</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {services.map((service, index) => (
-            <div
-              key={`service-${index}`}
-              className="bg-[#14293E] p-6 rounded-xl border border-[#1F3A4E] hover:border-blue-500 transition-colors"
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400 text-sm">
+              <Cpu size={16} />
+              Available for AI & Cloud Architecture Contracts
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold mb-6"
+          >
+            <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+              Principal AI
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Systems Architect
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed"
+          >
+            Building{" "}
+            <span className="text-white font-medium">agentic AI systems</span>,{" "}
+            <span className="text-white font-medium">
+              real-time ML pipelines
+            </span>
+            , and{" "}
+            <span className="text-white font-medium">
+              production-grade AWS architectures
+            </span>{" "}
+            for enterprise clients across customer service, logistics, and
+            finance.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          >
+            <a
+              href="#portfolio"
+              className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
             >
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-              <p className="text-gray-300 mb-4">{service.description}</p>
-              <ul className="space-y-2">
-                {service.benefits.map((benefit, i) => (
-                  <li key={`benefit-${i}`} className="flex items-center text-sm">
-                    <span className="text-blue-400 mr-2">✓</span>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PORTFOLIO */}
-      <section id="portfolio" className="px-8 py-16 bg-[#0C1B2A]">
-        <h2 className="text-3xl font-bold mb-12 text-center">Featured Work</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {projects.map((proj) => (
-            <div
-              key={`project-${proj.id}`}
-              className="bg-[#14293E] rounded-xl p-6 border border-[#1F3A4E]"
+              View Portfolio
+              <ArrowRight
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+            <a
+              href="#contact"
+              className="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full text-lg hover:bg-white/5 transition-colors"
             >
-              <div className="mb-4">
-                <h3 className="text-xl font-semibold">{proj.title}</h3>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {proj.technologies.map((tech, i) => (
-                    <span
-                      key={`tech-${proj.id}-${i}`}
-                      className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <ul className="space-y-2 mb-4">
-                {proj.outcomes.map((outcome, i) => (
-                  <li key={`outcome-${proj.id}-${i}`} className="flex items-center text-sm">
-                    <span className="text-blue-400 mr-2">→</span>
-                    {outcome}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => openProjectModal(proj.id)}
-                className="mt-4 text-blue-400 hover:text-blue-300 flex items-center"
-              >
-                View Case Study
-                <span className="ml-2">↗</span>
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+              <Mail size={20} />
+              Get in Touch
+            </a>
+          </motion.div>
 
-      {/* BLOG */}
-      <section id="blog" className="px-8 py-16 bg-[#0F2233]">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">Technical Insights</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {blogPosts.map((post) => (
-              <article
-                key={`blog-${post.id}`}
-                className="bg-[#14293E] p-6 rounded-xl border border-[#1F3A4E]"
-              >
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                  <div className="flex gap-2">
-                    <span className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full">
-                      CDK Patterns
-                    </span>
-                    <span className="px-2 py-1 bg-[#1F3A4E] text-sm rounded-full">
-                      AI Integration
-                    </span>
-                  </div>
-                </div>
-                <p className="text-gray-300 mb-4">{post.snippet}</p>
-                <button
-                  onClick={() => openBlogModal(post.id)}
-                  className="text-blue-400 hover:text-blue-300 flex items-center"
+          {/* Client logos */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="pt-8 border-t border-white/10"
+          >
+            <p className="text-sm text-gray-500 mb-6">
+              Trusted by industry leaders
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+              {clients.map((client) => (
+                <div
+                  key={client.name}
+                  className="text-gray-500 hover:text-gray-300 transition-colors"
                 >
-                  Read Article
-                  <span className="ml-2">→</span>
-                </button>
-              </article>
+                  <span className="text-lg font-semibold tracking-wide">
+                    {client.abbrev}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <a href="#expertise" className="text-gray-500 hover:text-white transition-colors">
+            <ChevronDown size={32} className="animate-bounce" />
+          </a>
+        </motion.div>
+      </section>
+
+      {/* Expertise Section */}
+      <section id="expertise" className="relative py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Technical Expertise
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Specialized in building AI-powered systems that operate at
+              enterprise scale
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {expertise.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="p-6 h-full">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-4">
+                    <item.icon className="text-cyan-400" size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-400">{item.description}</p>
+                </GlassCard>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="px-8 py-16 bg-[#0F2233]">
-        <h2 className="text-3xl font-bold mb-8 text-center">Get in Touch</h2>
-        <div className="max-w-xl mx-auto">
-          <p className="text-center text-gray-300 mb-6">
-            If you’d like to discuss potential collaboration, feel free to drop
-            a message below or reach out via LinkedIn/GitHub.
-          </p>
-          <form className="flex flex-col gap-4">
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="px-4 py-2 rounded bg-[#14293E] text-white focus:outline-none"
-            />
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="px-4 py-2 rounded bg-[#14293E] text-white focus:outline-none"
-            />
-            <textarea
-              placeholder="Your Message"
-              rows={5}
-              className="px-4 py-2 rounded bg-[#14293E] text-white focus:outline-none"
-            ></textarea>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full transition-colors w-fit self-center"
-            >
-              Send Message
-            </button>
-          </form>
+      {/* Portfolio Section */}
+      <section id="portfolio" className="relative py-32 px-6 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                AI Portfolio
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Production AI platforms demonstrating agentic workflows, RAG
+              systems, and real-time automation
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {portfolioProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="overflow-hidden group">
+                  {/* Preview header */}
+                  <div
+                    className={`h-48 bg-gradient-to-br ${project.gradient} p-6 relative overflow-hidden`}
+                  >
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="relative z-10">
+                      <h3 className="text-2xl font-bold mb-1">
+                        {project.title}
+                      </h3>
+                      <p className="text-white/80">{project.subtitle}</p>
+                    </div>
+                    {/* Decorative elements */}
+                    <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <button
+                        onClick={() => {
+                          setActiveProject(project.id);
+                          setShowProjectModal(true);
+                        }}
+                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-colors"
+                      >
+                        <Play size={16} />
+                      </button>
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-colors"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <p className="text-gray-400 mb-4">{project.description}</p>
+
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.features.map((feature) => (
+                        <span
+                          key={feature}
+                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Tech stack */}
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                      {project.tech.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-xs text-gray-500 bg-slate-800/50 px-2 py-1 rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-[#0C1B2A] py-6 text-center">
-        <p className="text-sm text-gray-400">
-          © {new Date().getFullYear()} My Serverless & AI Portfolio. All rights reserved.
-        </p>
+      {/* Experience Section */}
+      <section id="experience" className="relative py-32 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Experience
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              A decade of building AI and cloud systems for global enterprises
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500 via-purple-500 to-pink-500" />
+
+            {experience.map((exp, index) => (
+              <motion.div
+                key={`${exp.company}-${exp.period}`}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative flex flex-col md:flex-row gap-8 mb-12 ${
+                  index % 2 === 0 ? "md:flex-row-reverse" : ""
+                }`}
+              >
+                {/* Timeline dot */}
+                <div className="absolute left-0 md:left-1/2 w-4 h-4 -translate-x-1/2 bg-slate-950 border-2 border-cyan-400 rounded-full z-10" />
+
+                {/* Content */}
+                <div
+                  className={`flex-1 pl-8 md:pl-0 ${
+                    index % 2 === 0 ? "md:pr-16 md:text-right" : "md:pl-16"
+                  }`}
+                >
+                  <GlassCard className="p-6">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <span className="text-cyan-400 text-sm font-medium">
+                        {exp.period}
+                      </span>
+                      <span className="px-2 py-0.5 bg-purple-500/20 text-purple-300 text-xs rounded-full">
+                        {exp.type}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-1">{exp.title}</h3>
+                    <p className="text-gray-400 mb-4">{exp.company}</p>
+                    <ul
+                      className={`space-y-2 ${
+                        index % 2 === 0 ? "md:text-right" : ""
+                      }`}
+                    >
+                      {exp.highlights.map((highlight) => (
+                        <li
+                          key={highlight}
+                          className="text-sm text-gray-400 flex items-start gap-2"
+                        >
+                          <span className="text-cyan-400 mt-1 flex-shrink-0">
+                            •
+                          </span>
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  </GlassCard>
+                </div>
+
+                {/* Spacer for alternating layout */}
+                <div className="hidden md:block flex-1" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services / What I Do Section */}
+      <section className="relative py-32 px-6 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                How I Can Help
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              From architecture design to production deployment
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Bot,
+                title: "Agentic AI Development",
+                description:
+                  "Design and build multi-agent systems using LangGraph, Bedrock, and custom orchestration frameworks. From autonomous customer service to CloudOps automation.",
+                cta: "Build AI Agents",
+              },
+              {
+                icon: MessageSquare,
+                title: "Contact Centre AI",
+                description:
+                  "Enterprise voice agents, real-time transcription, sentiment analysis, and knowledge-base integration using AWS Connect, Lex, and Bedrock.",
+                cta: "Modernize Support",
+              },
+              {
+                icon: BarChart3,
+                title: "RAG & Analytics",
+                description:
+                  "Semantic search, document intelligence, and retrieval-augmented generation systems for finance, compliance, and enterprise knowledge management.",
+                cta: "Unlock Your Data",
+              },
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="p-8 h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center mb-6">
+                    <service.icon className="text-white" size={28} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-gray-400 mb-6 flex-grow">
+                    {service.description}
+                  </p>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    {service.cta} <ArrowRight size={16} />
+                  </a>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative py-32 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Let&apos;s Build Something
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+              Looking for an AI architect to design and deliver your next
+              production system? Let&apos;s discuss how I can help transform
+              your vision into reality.
+            </p>
+
+            <GlassCard className="p-8 md:p-12 max-w-2xl mx-auto" hover={false}>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Company / Project"
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Tell me about your project..."
+                    rows={5}
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl font-medium text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+                >
+                  Send Message
+                </button>
+              </form>
+
+              <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a
+                  href="mailto:dale@dalegrant.dev"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Mail size={20} />
+                  dale@dalegrant.dev
+                </a>
+                <a
+                  href="https://linkedin.com/in/dalebgrant"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Linkedin size={20} />
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/huncrew"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Github size={20} />
+                  GitHub
+                </a>
+              </div>
+            </GlassCard>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-white/10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} Dale Grant. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="https://github.com/huncrew"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-white transition-colors"
+            >
+              <Github size={20} />
+            </a>
+            <a
+              href="https://linkedin.com/in/dalebgrant"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-white transition-colors"
+            >
+              <Linkedin size={20} />
+            </a>
+          </div>
+        </div>
       </footer>
 
-      {/* PROJECT MODAL */}
-      {selectedProjectId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-          <div className="bg-[#1A2D3F] p-6 max-w-2xl w-full rounded relative mx-4">
-            <button
-              onClick={closeProjectModal}
-              className="absolute top-4 right-4 text-gray-300 hover:text-white"
+      {/* Project Modal with iframe preview */}
+      <AnimatePresence>
+        {showProjectModal && selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowProjectModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-6xl h-[80vh] bg-slate-900 rounded-2xl overflow-hidden border border-white/10"
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕
-            </button>
-            {projects
-              .filter((p) => p.id === selectedProjectId)
-              .map((p) => (
-                <div
-                  key={`modal-project-${p.id}`}
-                  className="overflow-y-auto max-h-[80vh] pr-2"
-                >
-                  <h3 className="text-2xl font-bold mb-4">{p.title}</h3>
-                  <div className="prose prose-invert text-sm whitespace-pre-wrap">
-                    {p.details}
-                  </div>
+              {/* Modal header */}
+              <div className="absolute top-0 left-0 right-0 p-4 bg-slate-900/90 backdrop-blur-sm border-b border-white/10 flex items-center justify-between z-10">
+                <div>
+                  <h3 className="text-xl font-bold">{selectedProject.title}</h3>
+                  <p className="text-gray-400 text-sm">
+                    {selectedProject.subtitle}
+                  </p>
                 </div>
-              ))}
-          </div>
-        </div>
-      )}
+                <div className="flex items-center gap-3">
+                  <a
+                    href={selectedProject.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition-colors"
+                  >
+                    <ExternalLink size={16} />
+                    Open Live Site
+                  </a>
+                  <button
+                    onClick={() => setShowProjectModal(false)}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
 
-      {/* BLOG MODAL */}
-      {selectedBlogId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
-          <div className="bg-[#1A2D3F] p-6 max-w-2xl w-full rounded relative mx-4">
-            <button
-              onClick={closeBlogModal}
-              className="absolute top-4 right-4 text-gray-300 hover:text-white"
-            >
-              ✕
-            </button>
-            {blogPosts
-              .filter((b) => b.id === selectedBlogId)
-              .map((b) => (
-                <div
-                  key={`modal-blog-${b.id}`}
-                  className="overflow-y-auto max-h-[80vh] pr-2"
-                >
-                  <h3 className="text-2xl font-bold mb-4">{b.title}</h3>
-                  <div className="prose prose-invert text-sm whitespace-pre-wrap">
-                    {b.fullContent}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
+              {/* iframe preview */}
+              <div className="pt-20 h-full">
+                <iframe
+                  src={selectedProject.url}
+                  className="w-full h-full border-0"
+                  title={selectedProject.title}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
