@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -14,16 +13,14 @@ import {
   Shield,
   BarChart3,
   MessageSquare,
+  Headset,
 } from "lucide-react";
-
-// Animated background component
-const AnimatedBackground = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
-    <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
-    <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl animate-pulse delay-500" />
-  </div>
-);
+import {
+  AnimatedBackground,
+  GlassCard,
+  SiteNav,
+  SiteFooter,
+} from "@/components/site";
 
 // Floating particles
 const Particles = () => (
@@ -49,25 +46,6 @@ const Particles = () => (
       />
     ))}
   </div>
-);
-
-// Glass card component
-const GlassCard = ({
-  children,
-  className = "",
-  hover = true,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  hover?: boolean;
-}) => (
-  <motion.div
-    whileHover={hover ? { scale: 1.02, y: -4 } : {}}
-    className={`relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden ${className}`}
-  >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-    <div className="relative z-10">{children}</div>
-  </motion.div>
 );
 
 // Client logos (using text for now, can be replaced with actual logos)
@@ -121,55 +99,20 @@ const expertise = [
 ];
 
 export default function Home() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <div className="bg-slate-950 text-white min-h-screen overflow-x-hidden">
       <AnimatedBackground />
       <Particles />
 
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/10"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"
-          >
-            Grant Edison
-          </motion.div>
-          <div className="hidden md:flex items-center gap-8">
-            {["Services", "Expertise", "Contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-          <a
-            href="#contact"
-            className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            Get Started <ArrowRight size={16} />
-          </a>
-        </div>
-      </motion.nav>
+      <SiteNav
+        links={[
+          { label: "Services", href: "#services" },
+          { label: "Expertise", href: "#expertise" },
+          { label: "MSP Automation", href: "/msp" },
+          { label: "Contact", href: "#contact" },
+        ]}
+        cta="#contact"
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
@@ -350,6 +293,7 @@ export default function Home() {
                 description:
                   "Design and build multi-agent systems using LangGraph, Bedrock, and custom orchestration frameworks. From autonomous customer service to CloudOps automation.",
                 cta: "Build AI Agents",
+                href: "#contact",
               },
               {
                 icon: MessageSquare,
@@ -357,6 +301,7 @@ export default function Home() {
                 description:
                   "Enterprise voice agents, real-time transcription, sentiment analysis, and knowledge-base integration using AWS Connect, Lex, and Bedrock.",
                 cta: "Modernize Support",
+                href: "#contact",
               },
               {
                 icon: BarChart3,
@@ -364,6 +309,7 @@ export default function Home() {
                 description:
                   "Semantic search, document intelligence, and retrieval-augmented generation systems for finance, compliance, and enterprise knowledge management.",
                 cta: "Unlock Your Data",
+                href: "#contact",
               },
             ].map((service, index) => (
               <motion.div
@@ -382,7 +328,7 @@ export default function Home() {
                     {service.description}
                   </p>
                   <a
-                    href="#contact"
+                    href={service.href}
                     className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
                     {service.cta} <ArrowRight size={16} />
@@ -391,6 +337,39 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* MSP automation banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12"
+          >
+            <GlassCard className="p-8 md:p-10" hover={false}>
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+                  <Headset className="text-white" size={28} />
+                </div>
+                <div className="flex-grow">
+                  <h3 className="text-2xl font-bold mb-2">
+                    AI Automation for MSPs
+                  </h3>
+                  <p className="text-gray-400">
+                    Our flagship product: an AI service desk that verifies
+                    callers, resolves Microsoft 365 requests end-to-end, and
+                    automates internal operations — built in production for a
+                    UK managed service provider.
+                  </p>
+                </div>
+                <a
+                  href="/msp"
+                  className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-full font-medium hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+                >
+                  Explore <ArrowRight size={18} />
+                </a>
+              </div>
+            </GlassCard>
+          </motion.div>
         </div>
       </section>
 
@@ -466,21 +445,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Grant Edison
-            </span>
-            <span className="text-gray-500 text-sm">| AI Systems Architecture</span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Grant Edison Ltd. All rights reserved.
-          </p>
-        </div>
-      </footer>
-
+      <SiteFooter />
     </div>
   );
 }
