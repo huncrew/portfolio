@@ -8,12 +8,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dale Grant | Principal AI Systems Architect",
+  title: "Grant Edison | Enterprise AI Systems Architecture",
   description:
-    "Building agentic AI systems, real-time ML pipelines, and production-grade AWS architectures. Specializing in LangGraph, Bedrock, RAG, and enterprise cloud solutions.",
+    "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures for enterprises that need AI to work, not just exist.",
   keywords: [
-    "AI Architect",
-    "AWS Architect",
+    "AI Consulting",
+    "AI Systems Architecture",
     "Agentic AI",
     "LangGraph",
     "AWS Bedrock",
@@ -21,22 +21,23 @@ export const metadata: Metadata = {
     "Machine Learning",
     "GenAI",
     "Cloud Architecture",
-    "Serverless",
+    "Contact Centre AI",
+    "Enterprise AI",
   ],
-  authors: [{ name: "Dale Grant" }],
+  authors: [{ name: "Grant Edison" }],
   openGraph: {
-    title: "Dale Grant | Principal AI Systems Architect",
+    title: "Grant Edison | Enterprise AI Systems Architecture",
     description:
-      "Building agentic AI systems, real-time ML pipelines, and production-grade AWS architectures for enterprise clients.",
-    url: "https://dalegrant.dev",
-    siteName: "Dale Grant",
+      "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures for enterprises.",
+    url: "https://grantedison.com",
+    siteName: "Grant Edison",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dale Grant | Principal AI Systems Architect",
+    title: "Grant Edison | Enterprise AI Systems Architecture",
     description:
-      "Building agentic AI systems, real-time ML pipelines, and production-grade AWS architectures.",
+      "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures.",
   },
 };
 
