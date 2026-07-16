@@ -25,6 +25,7 @@ import {
   BrainCircuit,
   Plug,
   ClipboardList,
+  Building2,
 } from "lucide-react";
 import {
   AnimatedBackground,
@@ -33,30 +34,89 @@ import {
   SiteFooter,
 } from "@/components/site";
 
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/80 mb-4">
+    {children}
+  </p>
+);
+
+const GridOverlay = () => (
+  <div
+    className="absolute inset-0 pointer-events-none opacity-[0.15]"
+    style={{
+      backgroundImage:
+        "radial-gradient(circle at 1px 1px, rgb(148 163 184 / 0.4) 1px, transparent 0)",
+      backgroundSize: "32px 32px",
+      maskImage: "radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent)",
+      WebkitMaskImage:
+        "radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent)",
+    }}
+  />
+);
+
 const howItWorks = [
   {
     icon: ShieldCheck,
     title: "Verify",
     description:
-      "The caller is verified once at intake — SMS one-time passcode on voice, single sign-on on chat. Verification is decoupled from execution, so every downstream action knows exactly who asked.",
+      "Every request starts with a verified identity — SMS one-time passcode on voice, single sign-on on chat, staff identity for internal work. Verification is decoupled from execution, so every downstream action knows exactly who asked.",
   },
   {
     icon: Wrench,
     title: "Resolve",
     description:
-      "Governed tools execute the request against Microsoft 365 with scoped, per-tenant credentials — no shared admin accounts, no credentials in prompts. Destructive actions are approval-gated.",
+      "Governed tools execute the request with scoped, per-tenant credentials — no shared admin accounts, no credentials in prompts. Destructive actions are approval-gated.",
   },
   {
     icon: Route,
     title: "Route",
     description:
-      "Anything the AI shouldn't handle is warm-transferred to your engineers with the verified identity, a conversation summary, and the full tool history — no 'can you repeat all that?'",
+      "Anything the AI shouldn't handle is warm-transferred to your people with the verified identity, a summary, and the full tool history — no 'can you repeat all that?'",
   },
   {
     icon: ScrollText,
     title: "Audit",
     description:
-      "Every action — who requested it, what was done, in which tenant — is written back to the PSA ticket. The automation leaves the same paper trail your engineers do.",
+      "Every action — who requested it, what was done, in which tenant — is written back to your system of record. The automation leaves the same paper trail your engineers do.",
+  },
+];
+
+const internalCapabilities = [
+  {
+    icon: FileText,
+    title: "Bids & pre-sales",
+    description:
+      "Agents draft SOWs and proposals grounded in your own CRM, past proposals, and pricing history. Senior staff review instead of authoring from scratch — bid for more, faster.",
+  },
+  {
+    icon: BadgePercent,
+    title: "Licence intelligence",
+    description:
+      "Reads each client's Microsoft 365 licence estate to surface unused and under-used seats for reclaim — a recurring saving hiding in plain sight across your whole client base.",
+  },
+  {
+    icon: UserPlus,
+    title: "Staff onboarding",
+    description:
+      "Internal joiner workflows run under staff identity — a separate trust boundary from client data — so new hires are productive on day one.",
+  },
+  {
+    icon: ListChecks,
+    title: "Ticket-queue agents",
+    description:
+      "Event-driven agents watch the queue, attempt resolution, run status checks, and post updates back to tickets automatically — no caller required.",
+  },
+  {
+    icon: BellRing,
+    title: "Alert triage",
+    description:
+      "NOC and RMM alert tickets arrive summarised with suggested fix steps from your runbooks, so engineers act instead of triaging.",
+  },
+  {
+    icon: Building2,
+    title: "Client onboarding",
+    description:
+      "Multi-tenant by design: bringing a new client under management is tenant consent and mapping — configuration, not an engineering project.",
   },
 ];
 
@@ -66,18 +126,6 @@ const serviceDeskCapabilities = [
     title: "Password, MFA & lockout resolution",
     description:
       "Verified caller → reset executed via Microsoft Graph → confirmed on the call → ticket logged. The highest-volume L1 contacts, handled end-to-end.",
-  },
-  {
-    icon: UserX,
-    title: "User offboarding",
-    description:
-      "Account disablement and access revocation, gated behind a verified request from an authorised approver before anything destructive runs.",
-  },
-  {
-    icon: FolderSearch,
-    title: "File recovery",
-    description:
-      "Locates and restores missing files across OneDrive and SharePoint, escalating to a human when standard search and restore don't find it.",
   },
   {
     icon: SearchCheck,
@@ -92,43 +140,22 @@ const serviceDeskCapabilities = [
       "Mailbox and shared-mailbox permissions, distribution list and security group membership, and joiner-mover-leaver flows like new-starter onboarding.",
   },
   {
+    icon: UserX,
+    title: "User offboarding",
+    description:
+      "Account disablement and access revocation, gated behind a verified request from an authorised approver before anything destructive runs.",
+  },
+  {
+    icon: FolderSearch,
+    title: "File recovery",
+    description:
+      "Locates and restores missing files across OneDrive and SharePoint, escalating to a human when standard search and restore don't find it.",
+  },
+  {
     icon: Ticket,
     title: "Ticket status & routing",
     description:
       "Callers get live status from your PSA without holding for an engineer, and everything else routes to the right queue with full context attached.",
-  },
-  {
-    icon: BadgePercent,
-    title: "Licence intelligence",
-    description:
-      "Reads each client's Microsoft 365 licence estate to surface unused and under-used seats for reclaim — a recurring saving hiding in plain sight.",
-  },
-  {
-    icon: BellRing,
-    title: "Alert summarisation",
-    description:
-      "NOC and RMM alert tickets arrive summarised with suggested fix steps from your runbooks, so engineers act instead of triaging.",
-  },
-];
-
-const internalCapabilities = [
-  {
-    icon: FileText,
-    title: "Bids & pre-sales",
-    description:
-      "Agents draft SOWs and proposals grounded in your own CRM, past proposals, and pricing history. Senior staff review instead of authoring from scratch.",
-  },
-  {
-    icon: UserPlus,
-    title: "Staff onboarding",
-    description:
-      "Internal joiner workflows run under staff identity — a separate trust boundary from client data — so new hires are productive on day one.",
-  },
-  {
-    icon: ListChecks,
-    title: "Ticket-queue agents",
-    description:
-      "Event-driven agents watch the queue, attempt resolution, run status checks, and post updates back to tickets automatically.",
   },
 ];
 
@@ -137,7 +164,7 @@ const architecture = [
     icon: PhoneCall,
     title: "Omnichannel front door",
     description:
-      "Amazon Connect replaces the legacy PBX as the single intake point. Voice runs on Amazon Nova Sonic speech-to-speech; chat and email converge on the same routing.",
+      "Amazon Connect replaces the legacy PBX as the single intake point. Voice runs on Amazon Nova Sonic speech-to-speech; chat and email converge on the same routing. Optional — internal-only deployments skip it entirely.",
   },
   {
     icon: Fingerprint,
@@ -167,14 +194,14 @@ const architecture = [
 
 const valueProps = [
   {
-    title: "Deflect the repetitive majority",
+    title: "Automate the repetitive majority",
     description:
-      "Password resets, MFA issues, and lockouts are the bulk of L1 volume. Every contact resolved without a human returns desk capacity to work that actually needs an engineer.",
+      "Password resets, licence audits, proposal drafts, alert triage — the high-volume, low-judgement work across your desk and back office. Every task an agent completes returns capacity to work that actually needs a person.",
   },
   {
-    title: "Engineers start with context",
+    title: "People start with context",
     description:
-      "Routed contacts arrive with verified identity, a summary, and the actions already attempted — handle times drop because nobody starts from zero.",
+      "Whatever reaches a human — a routed call or a drafted proposal — arrives with verified identity, a summary, and the work already attempted. Nobody starts from zero.",
   },
   {
     title: "Multi-tenant by design",
@@ -196,7 +223,8 @@ export default function MspPage() {
       <SiteNav
         links={[
           { label: "How It Works", href: "#how-it-works" },
-          { label: "Capabilities", href: "#capabilities" },
+          { label: "Internal Ops", href: "#internal-ops" },
+          { label: "Service Desk", href: "#service-desk" },
           { label: "Architecture", href: "#architecture" },
           { label: "Contact", href: "/#contact" },
         ]}
@@ -205,7 +233,8 @@ export default function MspPage() {
 
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center justify-center px-6 pt-28 pb-16">
-        <div className="max-w-5xl mx-auto text-center">
+        <GridOverlay />
+        <div className="max-w-5xl mx-auto text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -222,14 +251,14 @@ export default function MspPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold mb-6"
+            className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
           >
             <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Your Service Desk,
+              Your MSP Operations,
             </span>
             <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Answered by Agents
+            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+              Run by Agents
             </span>
           </motion.h1>
 
@@ -239,13 +268,15 @@ export default function MspPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            An AI front door for your support desk that{" "}
-            <span className="text-white font-medium">verifies the caller</span>,{" "}
+            AI agents that take on your{" "}
+            <span className="text-white font-medium">internal operations</span>{" "}
+            — bids, onboarding, licence management, alert triage — and, if you
+            run a desk,{" "}
             <span className="text-white font-medium">
-              resolves routine Microsoft 365 requests end-to-end
+              resolve customer requests end-to-end
             </span>
-            , and routes everything else to your engineers with full context —
-            every action written back to your PSA as an audit trail.
+            . Every action verified, governed, and written back to your systems
+            as an audit trail.
           </motion.p>
 
           <motion.div
@@ -265,7 +296,7 @@ export default function MspPage() {
               />
             </Link>
             <a
-              href="#capabilities"
+              href="#internal-ops"
               className="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full text-lg hover:bg-white/5 transition-colors"
             >
               See What It Automates
@@ -293,14 +324,15 @@ export default function MspPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <Eyebrow>The Model</Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 Verify. Resolve. Route. Audit.
               </span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Every contact follows the same governed path — whether it&apos;s
-              handled by an agent or a human
+              Every request follows the same governed path — whether it&apos;s
+              handled by an agent or a human, customer-facing or internal
             </p>
           </motion.div>
 
@@ -313,7 +345,7 @@ export default function MspPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <GlassCard className="p-6 h-full">
+                <GlassCard className="p-6 h-full hover:border-emerald-500/30 transition-colors">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center">
                       <step.icon className="text-emerald-400" size={24} />
@@ -333,8 +365,8 @@ export default function MspPage() {
         </div>
       </section>
 
-      {/* Capabilities */}
-      <section id="capabilities" className="relative py-24 px-6">
+      {/* Internal operations */}
+      <section id="internal-ops" className="relative py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -342,55 +374,29 @@ export default function MspPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <Eyebrow>Internal Operations</Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                What It Automates
+                The Back Office, Automated
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              The high-volume, repetitive work — resolved end-to-end, not just
-              deflected to a chatbot
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              No ticket-heavy desk? This is where the bigger prize usually is —
+              the agent platform runs your internal operations standalone, no
+              contact centre required
             </p>
           </motion.div>
 
-          <h3 className="text-2xl font-bold mb-8 text-center text-gray-200">
-            Customer service desk
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-            {serviceDeskCapabilities.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (index % 4) * 0.08 }}
-              >
-                <GlassCard className="p-6 h-full">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-                    <item.icon className="text-emerald-400" size={24} />
-                  </div>
-                  <h4 className="text-lg font-semibold mb-2">{item.title}</h4>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </div>
-
-          <h3 className="text-2xl font-bold mb-8 text-center text-gray-200">
-            Internal operations
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {internalCapabilities.map((item, index) => (
               <motion.div
                 key={item.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: (index % 3) * 0.08 }}
               >
-                <GlassCard className="p-6 h-full">
+                <GlassCard className="p-6 h-full hover:border-emerald-500/30 transition-colors">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
                     <item.icon className="text-purple-400" size={24} />
                   </div>
@@ -405,8 +411,8 @@ export default function MspPage() {
         </div>
       </section>
 
-      {/* Architecture */}
-      <section id="architecture" className="relative py-24 px-6 bg-slate-900/50">
+      {/* Customer service desk */}
+      <section id="service-desk" className="relative py-24 px-6 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -414,7 +420,53 @@ export default function MspPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <Eyebrow>Customer Service Desk</Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                An AI Front Door for Support
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              For MSPs running first-line support: the high-volume, repetitive
+              contacts — resolved end-to-end, not just deflected to a chatbot
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {serviceDeskCapabilities.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: (index % 3) * 0.08 }}
+              >
+                <GlassCard className="p-6 h-full hover:border-emerald-500/30 transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
+                    <item.icon className="text-emerald-400" size={24} />
+                  </div>
+                  <h4 className="text-lg font-semibold mb-2">{item.title}</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture */}
+      <section id="architecture" className="relative py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <Eyebrow>Under the Hood</Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 How It&apos;s Built
               </span>
@@ -468,7 +520,7 @@ export default function MspPage() {
       </section>
 
       {/* Why it matters */}
-      <section className="relative py-24 px-6">
+      <section className="relative py-24 px-6 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -476,7 +528,8 @@ export default function MspPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <Eyebrow>Outcomes</Eyebrow>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 Why MSPs Choose This
               </span>
@@ -492,7 +545,7 @@ export default function MspPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <GlassCard className="p-8 h-full">
+                <GlassCard className="p-8 h-full hover:border-emerald-500/30 transition-colors">
                   <h3 className="text-xl font-semibold mb-3">{prop.title}</h3>
                   <p className="text-gray-400 leading-relaxed">
                     {prop.description}
@@ -509,29 +562,31 @@ export default function MspPage() {
             className="text-center text-gray-500 text-sm mt-10 max-w-3xl mx-auto"
           >
             Delivery is phased and scope-gated — identity foundation first,
-            then live self-service on Microsoft 365, then reasoning agents and
-            internal automation. No big-bang cutover.
+            then live automation where it pays back fastest, whether that&apos;s
+            self-service on Microsoft 365 or your internal workflows. No
+            big-bang cutover.
           </motion.p>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="relative py-24 px-6 bg-slate-900/50">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative py-24 px-6">
+        <GridOverlay />
+        <div className="max-w-4xl mx-auto text-center relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                See It on Your Own Desk
+                See It on Your Own Operations
               </span>
             </h2>
             <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-              Tell us about your contact volume and ticket mix, and we&apos;ll
-              show you what the automation would handle — starting with a
-              working demo, not a slide deck.
+              Tell us where the repetitive work piles up — your desk, your
+              back office, or both — and we&apos;ll show you what the agents
+              would handle. Starting with a working demo, not a slide deck.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

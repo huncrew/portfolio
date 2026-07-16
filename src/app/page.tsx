@@ -21,6 +21,7 @@ import {
   SiteNav,
   SiteFooter,
 } from "@/components/site";
+import { ContactForm } from "@/components/contact-form";
 
 // Floating particles
 const Particles = () => (
@@ -355,10 +356,10 @@ export default function Home() {
                     AI Automation for MSPs
                   </h3>
                   <p className="text-gray-400">
-                    Our flagship product: an AI service desk that verifies
-                    callers, resolves Microsoft 365 requests end-to-end, and
-                    automates internal operations — built in production for a
-                    UK managed service provider.
+                    Our flagship product: AI agents for your internal
+                    operations — bids, onboarding, licence management — and an
+                    AI service desk that resolves customer requests end-to-end.
+                    Built in production for a UK managed service provider.
                   </p>
                 </div>
                 <a
@@ -392,44 +393,7 @@ export default function Home() {
             </p>
 
             <GlassCard className="p-8 md:p-12 max-w-2xl mx-auto" hover={false}>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Your Email"
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Company / Project"
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    placeholder="Tell me about your project..."
-                    rows={5}
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl font-medium text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
 
               <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6">
                 <a

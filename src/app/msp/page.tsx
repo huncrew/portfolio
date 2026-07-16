@@ -4,7 +4,7 @@ import MspPage from "./msp-page";
 export const metadata: Metadata = {
   title: "AI Automation for MSPs | Grant Edison",
   description:
-    "An AI service desk for managed service providers: verify callers, resolve Microsoft 365 requests end-to-end, automate internal operations, and route everything else to engineers with full context.",
+    "AI agents for managed service providers: automate internal operations — bids, onboarding, licence management, alert triage — and resolve customer Microsoft 365 requests end-to-end, with every action audited.",
   keywords: [
     "MSP Automation",
     "AI Service Desk",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Automation for MSPs | Grant Edison",
     description:
-      "An AI front door for your service desk: verified callers, end-to-end Microsoft 365 resolution, and automated internal operations — every action audited in your PSA.",
+      "AI agents for MSP internal operations and customer service desks — verified, governed, and audited in your PSA.",
     url: "https://grantedison.com/msp",
     siteName: "Grant Edison",
     type: "website",
