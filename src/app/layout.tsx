@@ -1,56 +1,30 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
 export const metadata: Metadata = {
-  title: "Grant Edison | Enterprise AI Systems Architecture",
+  title: "grantedison — the UK specialists in agentic Amazon Connect",
   description:
-    "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures for enterprises that need AI to work, not just exist.",
-  keywords: [
-    "AI Consulting",
-    "AI Systems Architecture",
-    "Agentic AI",
-    "LangGraph",
-    "AWS Bedrock",
-    "RAG Systems",
-    "Machine Learning",
-    "GenAI",
-    "Cloud Architecture",
-    "Contact Centre AI",
-    "Enterprise AI",
-  ],
-  authors: [{ name: "Grant Edison" }],
+    "AI contact centres and agentic automation on the new Amazon Connect "
+    + "stack — Nova Sonic voice, Bedrock AgentCore, provable authorisation "
+    + "gates — designed, built and handed over in your own AWS account.",
+  metadataBase: new URL("https://grantedison.com"),
   openGraph: {
-    title: "Grant Edison | Enterprise AI Systems Architecture",
+    title: "grantedison — the UK specialists in agentic Amazon Connect",
     description:
-      "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures for enterprises.",
+      "AI contact centres and agentic automation on the new Amazon Connect "
+      + "stack, delivered in your own AWS account. SC cleared, UK-based.",
     url: "https://grantedison.com",
-    siteName: "Grant Edison",
+    siteName: "grantedison",
     type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Grant Edison | Enterprise AI Systems Architecture",
-    description:
-      "We build agentic AI systems, real-time ML pipelines, and production-grade cloud architectures.",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
-      </body>
+    <html lang="en-GB">
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

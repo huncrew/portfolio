@@ -1,16 +1,20 @@
 "use client";
 import { useState } from "react";
-import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 const ENDPOINT =
   "https://allscdjnd56mrksq3djjayfltm0xsmkq.lambda-url.us-east-1.on.aws/";
 
 const inputClass =
-  "w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors";
+  "w-full rounded-md border border-input bg-background px-3.5 py-2.5 text-sm "
+  + "shadow-xs transition-colors placeholder:text-muted-foreground "
+  + "focus:outline-none focus:ring-2 focus:ring-ring";
 
 export const ContactForm = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
+    "idle",
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,38 +38,38 @@ export const ContactForm = () => {
 
   if (status === "sent") {
     return (
-      <div className="py-12 flex flex-col items-center gap-4 text-center">
-        <CheckCircle2 className="text-emerald-400" size={48} />
-        <p className="text-xl font-medium">Message sent</p>
-        <p className="text-gray-400">
-          Thanks for reaching out — we&apos;ll get back to you shortly.
+      <div className="flex flex-col items-center gap-3 py-10 text-center">
+        <CheckCircle2 className="h-10 w-10 text-emerald-600" />
+        <p className="text-lg font-semibold">Message sent</p>
+        <p className="text-sm text-muted-foreground">
+          Thanks — I read these personally and will come back to you shortly.
         </p>
       </div>
     );
   }
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form className="space-y-4" onSubmit={handleSubmit}>
+      <div className="grid gap-4 sm:grid-cols-2">
         <input
           type="text"
           name="name"
           required
-          placeholder="Your Name"
+          placeholder="Your name"
           className={inputClass}
         />
         <input
           type="email"
           name="email"
           required
-          placeholder="Your Email"
+          placeholder="Your email"
           className={inputClass}
         />
       </div>
       <input
         type="text"
         name="company"
-        placeholder="Company / Project"
+        placeholder="Organisation"
         className={inputClass}
       />
       {/* Honeypot: hidden from humans, bots fill it and get silently dropped */}
@@ -80,27 +84,28 @@ export const ContactForm = () => {
       <textarea
         name="message"
         required
-        placeholder="Tell us about your project..."
         rows={5}
+        placeholder="What are you looking at — a Connect estate, a legacy migration, a service desk?"
         className={`${inputClass} resize-none`}
       />
-      <button
+      <Button
         type="submit"
+        size="lg"
         disabled={status === "sending"}
-        className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl font-medium text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+        className="w-full bg-[#FF9900] text-[#12233b] hover:bg-[#ffad33]"
       >
         {status === "sending" ? (
           <>
-            <Loader2 className="animate-spin" size={20} /> Sending…
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending…
           </>
         ) : (
-          "Send Message"
+          "Send message"
         )}
-      </button>
+      </Button>
       {status === "error" && (
-        <p className="flex items-center justify-center gap-2 text-sm text-red-400">
-          <AlertCircle size={16} />
-          Something went wrong — email us directly at dale@grantedison.com
+        <p className="flex items-center justify-center gap-2 text-sm text-red-600">
+          <AlertCircle className="h-4 w-4" />
+          Something went wrong — email me directly at dale@grantedison.com
         </p>
       )}
     </form>
