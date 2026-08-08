@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  Bot,
   CheckCircle2,
   FileText,
   Headset,
+  Mail,
   Wrench,
 } from "lucide-react";
 
@@ -21,11 +21,11 @@ import {
 } from "@/components/site";
 
 export const metadata: Metadata = {
-  title: "Agentic AI for MSPs | grantedison",
+  title: "AI service desks | grantedison",
   description:
-    "AI contact centres, autonomous ticket resolution and internal agents "
-    + "for MSPs and service businesses — built on AWS, in your own account, "
-    + "with provable authorisation gates.",
+    "AI front doors, autonomous ticket resolution and internal agents for "
+    + "ticketed service desks — built on AWS, in your own account, with "
+    + "provable authorisation gates.",
 };
 
 const LAYERS = [
@@ -33,7 +33,7 @@ const LAYERS = [
     icon: Headset,
     accent: "blue",
     n: "01",
-    title: "AI contact centre — the entry point",
+    title: "An AI front door for the desk",
     body: "Amazon Connect + Nova Sonic real-time voice + Bedrock agents. "
       + "Answers calls with no queue, authenticates the caller server-side "
       + "— the agent cannot act on an unverified caller — resolves L1 "
@@ -47,10 +47,10 @@ const LAYERS = [
     accent: "emerald",
     n: "02",
     title: "Autonomous ticket resolution",
-    body: "Agents that work the PSA queue itself — Halo and others — "
-      + "triage, diagnose, resolve, update. Not just logging tickets from "
-      + "calls: clearing L1 volume around the clock so senior technicians "
-      + "stay on complex, billable work.",
+    body: "Agents that work the ticket queue itself — triage, diagnose, "
+      + "resolve, update — against live systems. Not just logging tickets "
+      + "from calls: clearing L1 volume around the clock so senior "
+      + "engineers stay on complex, billable work.",
   },
   {
     icon: FileText,
@@ -64,13 +64,13 @@ const LAYERS = [
 ] as const;
 
 const FIT = [
-  "MSPs with ticketed service desks (Halo / ConnectWise / Autotask)",
+  "Ticketed service desks on Halo, ConnectWise, Autotask or ServiceNow-class ITSMs",
   "Telecoms and UC providers running fault and provisioning desks",
   "Organisations already on Amazon Connect wanting the AI layer",
   "Public sector — councils, NHS, government contact centres (SC cleared)",
 ] as const;
 
-export default function MspPage() {
+export default function ServiceDesksPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="relative overflow-hidden bg-gradient-to-br from-[#12233b] via-[#1F4E79] to-[#2f6ea8] text-white">
@@ -86,11 +86,11 @@ export default function MspPage() {
               variant="outline"
               className="mb-4 border-white/30 bg-white/10 text-[11px] tracking-wide text-white"
             >
-              For MSPs and service businesses
+              AI for ticketed service desks
             </Badge>
             <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              Agentic AI for MSPs,
-              <br className="hidden sm:block" /> built on AWS.
+              Service desks,
+              <br className="hidden sm:block" /> worked by agents.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-white/80">
               Three expanding layers — an AI front door for the desk, agents
@@ -98,9 +98,8 @@ export default function MspPage() {
               them. Delivered in{" "}
               <span className="font-medium text-white">your own AWS account</span>{" "}
               with authorisation gates that live in the actions, not the
-              prompt. The reference delivery: an 8-week fixed-price engagement
-              for a UK MSP, including HaloPSA and Microsoft 365 tenant
-              integration.
+              prompt. The reference delivery: an 8-week fixed-price
+              engagement including ITSM and Microsoft 365 tenant integration.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button
@@ -180,7 +179,7 @@ export default function MspPage() {
         </div>
       </section>
 
-      {/* ---------- the product ---------- */}
+      {/* ---------- CTA ---------- */}
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#12233b] via-[#1F4E79] to-[#2f6ea8] p-10 text-white">
           <div
@@ -190,38 +189,28 @@ export default function MspPage() {
           />
           <div className="relative max-w-2xl">
             <div className="inline-flex rounded-xl border border-white/30 bg-white/20 p-2.5 backdrop-blur-xl">
-              <Bot className="h-5 w-5" />
+              <Headset className="h-5 w-5" />
             </div>
             <h2 className="mt-5 text-2xl font-bold tracking-tight">
-              The productised version: oasify.ai
+              Start with your own ticket history
             </h2>
             <p className="mt-3 text-white/80">
-              The same platform, productised — gated AI ticket-resolution
-              agents for Halo-based service desks that execute the fix, not
-              just the triage, deployed in your own cloud with an
-              authorisation gate we can prove. If you run a HaloPSA desk, the
-              first step is a read on your own last 90 days of tickets.
+              The first step is a read on your desk&apos;s recent tickets —
+              which of them these agents would have worked, against your
+              volumes, not an industry average. If the number is worth acting
+              on, the pilot starts read-only.
             </p>
             <Button
               asChild
               size="lg"
               className="mt-7 bg-[#FF9900] text-[#12233b] hover:bg-[#ffad33]"
             >
-              <a href="https://oasify.ai">
-                oasify.ai <ArrowRight className="ml-2 h-4 w-4" />
+              <a href={`mailto:${CONTACT}?subject=Service%20desk%20%E2%80%94%20ticket%20read`}>
+                <Mail className="mr-2 h-4 w-4" /> {CONTACT}
               </a>
             </Button>
           </div>
         </div>
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          Or talk to us directly:{" "}
-          <a
-            className="font-medium text-[#1F4E79] hover:underline"
-            href={`mailto:${CONTACT}`}
-          >
-            {CONTACT}
-          </a>
-        </p>
       </section>
 
       <SiteFooter />

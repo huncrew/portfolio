@@ -42,7 +42,7 @@ export const ContactForm = () => {
         <CheckCircle2 className="h-10 w-10 text-emerald-600" />
         <p className="text-lg font-semibold">Message sent</p>
         <p className="text-sm text-muted-foreground">
-          Thanks — I read these personally and will come back to you shortly.
+          Thanks — we&apos;ll come back to you shortly.
         </p>
       </div>
     );

@@ -56,7 +56,7 @@ const NAV_LINKS = [
   { label: "Delivery", href: "/#delivery" },
   { label: "Proof", href: "/#proof" },
   { label: "Live demo", href: "/demo" },
-  { label: "MSPs", href: "/msp" },
+  { label: "Service desks", href: "/msp" },
 ];
 
 /** Nav row rendered inside each page's hero band. */
@@ -121,9 +121,7 @@ export const SiteFooter = () => (
         <Wordmark /> <span className="ml-1">— agentic Amazon Connect delivery, UK</span>
       </p>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <a className="hover:text-foreground" href="https://oasify.ai">
-          oasify.ai — our Agentic MSP Platform
-        </a>
+        <span>SC-cleared · AWS-certified delivery</span>
         <a className="hover:text-foreground" href={`mailto:${CONTACT}`}>
           {CONTACT}
         </a>

@@ -82,9 +82,10 @@ const LAYERS = [
     accent: "emerald",
     title: "Autonomous ticket resolution",
     kicker: "The queue itself",
-    body: "Agents that work the service-desk queue — triage, diagnose, "
-      + "resolve, update — against live systems, not a knowledge base, with "
-      + "every action written back to the ticket as an audit trail.",
+    body: "Agents that work the ticket queue in your ITSM — triage, "
+      + "diagnose, resolve, update — against live systems, not a knowledge "
+      + "base, with every action written back to the ticket as an audit "
+      + "trail.",
   },
   {
     icon: FileText,
@@ -159,9 +160,9 @@ const PROOF = [
     accent: "violet",
     value: "17 checks",
     label: "negative authorisation",
-    note: "A suite proving every gate denies — verified caller, PSA "
+    note: "A suite proving every gate denies — verified caller, known "
       + "contact, same client, that client's tenant only — from the first "
-      + "UK MSP deployment.",
+      + "real-world service-desk deployment.",
   },
 ] as const;
 
@@ -280,8 +281,8 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-16">
           <h2 className="text-2xl font-bold tracking-tight">What we deliver</h2>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            Three expanding layers — for Connect estates, legacy contact-centre
-            migrations, MSPs and public sector.
+            Three expanding layers — for Connect estates, legacy
+            contact-centre migrations, and public sector.
           </p>
 
           <div className="mt-8 grid gap-5 md:grid-cols-3">
@@ -340,8 +341,9 @@ export default function Home() {
           Proof, not promises
         </h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Each of these happened on a dated run against real systems — in
-          sandbox and on a first UK MSP deployment.
+          Each of these happened on a dated run against real systems. No
+          uptime, SLA or accuracy figures appear here — every number traces
+          to something that actually ran.
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
@@ -430,32 +432,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- honesty panel ---------- */}
-      <section className="border-t bg-muted/30">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="rounded-xl border bg-gradient-to-r from-amber-50 to-orange-50 p-7">
-            <h2 className="text-xl font-semibold text-amber-900">
-              Where this honestly is
-            </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-amber-900/85">
-              grantedison is a specialist consultancy in build-out. The
-              platform work is proven live in sandbox and on a first UK MSP
-              deployment — no one is in production on it yet. You will not
-              find an uptime figure, an SLA, an accuracy percentage or a logo
-              wall on this page: the numbers above trace to dated runs, and
-              clients are named only with written approval. What we will do is
-              demonstrate every claim on your systems.
-            </p>
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-amber-900/85">
-              Built and delivered personally by Dale Grant — AWS Certified
-              Solutions Architect Professional, SC cleared.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* ---------- contact ---------- */}
-      <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
+      <section id="contact" className="border-t bg-muted/30">
+        <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">
@@ -464,8 +443,9 @@ export default function Home() {
             <p className="mt-3 max-w-md text-muted-foreground">
               A Connect estate you want the AI layer on, a legacy
               Avaya/Genesys/Mitel migration, a ticketed service desk, or a
-              programme that needs delivery capacity — tell me what you&apos;re
-              looking at and I&apos;ll come back with something concrete.
+              programme that needs delivery capacity — tell us what
+              you&apos;re looking at and we&apos;ll come back with something
+              concrete.
             </p>
             <div className="mt-6 space-y-3 text-sm text-muted-foreground">
               <p className="flex items-start gap-2.5">
@@ -491,6 +471,7 @@ export default function Home() {
           <div className="rounded-xl border bg-card p-6 shadow-sm sm:p-8">
             <ContactForm />
           </div>
+        </div>
         </div>
       </section>
 
