@@ -15,6 +15,7 @@ import {
   SiteFooter,
 } from "@/components/site";
 import { DemoRunner } from "./demo-client";
+import { QaChat } from "./qa-chat";
 
 export const metadata: Metadata = {
   title: "Live demo — a real agent, in your browser | grantedison",
@@ -102,6 +103,34 @@ export default function DemoPage() {
       {/* ---------- the runner ---------- */}
       <section className="mx-auto max-w-6xl px-6 py-12">
         <DemoRunner />
+      </section>
+
+      {/* ---------- WhatsApp-style Q&A ---------- */}
+      <section className="border-t">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <div className="grid items-start gap-10 lg:grid-cols-2">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">
+                Talk to a grounded Q&amp;A agent
+              </h2>
+              <p className="mt-3 max-w-xl text-muted-foreground">
+                The same conversation a WhatsApp number carries: Amazon Connect
+                chat in front, a Claude agent on Bedrock AgentCore behind it,
+                answering only from an operator-edited answer set. Ask a
+                question sideways and it still finds the approved answer; ask
+                something off-list and it hands you to a human rather than
+                improvising — on a public channel, an invented answer about
+                payments or legal duties is worse than none.
+              </p>
+              <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+                The answer set here is a fictional licensing service, seeded as
+                demo data. Point the same flow at a WhatsApp Business number
+                and this exact conversation happens in WhatsApp.
+              </p>
+            </div>
+            <QaChat />
+          </div>
+        </div>
       </section>
 
       {/* ---------- rails ---------- */}
