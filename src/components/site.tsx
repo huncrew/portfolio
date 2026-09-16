@@ -53,10 +53,10 @@ export const Wordmark = ({ onDark = false }: { onDark?: boolean }) => (
 );
 
 const NAV_LINKS = [
-  { label: "Delivery", href: "/#delivery" },
+  { label: "What we do", href: "/#services" },
+  { label: "Partners", href: "/#how" },
   { label: "Proof", href: "/#proof" },
   { label: "Live demo", href: "/demo" },
-  { label: "Service desks", href: "/msp" },
 ];
 
 /** Nav row rendered inside each page's hero band. */
@@ -83,7 +83,7 @@ export const HeroNav = () => (
           variant="outline"
           className="border-white/30 bg-white/20 text-white hover:bg-white/30 hover:text-white"
         >
-          <Link href="/#contact">Book a call</Link>
+          <Link href="/#contact">Get in touch</Link>
         </Button>
       </div>
     </nav>
@@ -118,7 +118,7 @@ export const SiteFooter = () => (
   <footer className="border-t">
     <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
       <p>
-        <Wordmark /> <span className="ml-1">— agentic Amazon Connect delivery, UK</span>
+        <Wordmark /> <span className="ml-1">— AI architecture, pre-sales and delivery on AWS, UK</span>
       </p>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
         <span>SC-cleared · AWS-certified delivery</span>

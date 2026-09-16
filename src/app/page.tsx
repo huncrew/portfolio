@@ -3,18 +3,16 @@ import {
   ArrowRight,
   Award,
   Bot,
+  BrainCircuit,
   CheckCircle2,
-  Cloud,
-  FileText,
   Handshake,
   Headset,
   Lock,
   MapPin,
+  Presentation,
   ShieldCheck,
   ShieldX,
   Timer,
-  Waypoints,
-  Wrench,
   Zap,
 } from "lucide-react";
 
@@ -30,121 +28,85 @@ import {
   SiteFooter,
 } from "@/components/site";
 
-/** Positioning per the business source of truth: early to Connect's second
- *  act; the crowd competing over the old stack is not the competition. */
-const CLAIMS = [
+/** Three ways to engage — deliberately broad. The practice is AI across
+ *  AWS; contact centres are one deep specialism, not the whole identity. */
+const OFFERS = [
   {
-    icon: Waypoints,
+    icon: BrainCircuit,
     accent: "blue",
-    title: "Early, not late",
-    body: "Amazon re-platformed Connect in 2026 — Nova Sonic speech-to-speech "
-      + "voice, agentic flows, Bedrock AgentCore. Most delivery expertise in "
-      + "the market was built for the previous stack. We built agentic "
-      + "delivery before it was native in Connect, and have a real build on "
-      + "the new stack. grantedison is not late to Connect; it is early to "
-      + "Connect's second act.",
+    title: "AI solutions architecture",
+    kicker: "Design and build",
+    body: "Agentic systems that make it to production: Claude Agent SDK on "
+      + "Bedrock AgentCore, MCP tool layers with authorisation enforced in "
+      + "code, RAG and knowledge systems, real-time pipelines, and the AWS "
+      + "landing zone underneath. Hands-on where it counts — the "
+      + "architecture is written by someone who ships it.",
   },
   {
-    icon: ShieldCheck,
-    accent: "violet",
-    title: "Gates outside the model",
-    body: "Callers are verified deterministically — never by the LLM — and "
-      + "every action re-checks its own authority at execution time. The "
-      + "deny paths are covered by an automated test suite that runs on "
-      + "every change, and the two-layer refusal is demonstrable live.",
-  },
-  {
-    icon: Cloud,
+    icon: Presentation,
     accent: "emerald",
-    title: "Your account, your IP",
-    body: "Everything is built in your own AWS account: agents on Bedrock "
-      + "AgentCore, tools as single-purpose Lambdas behind an MCP gateway. "
-      + "Fixed price, phased payments — and you own all code and IP at "
-      + "handover.",
+    title: "Pre-sales and solution design",
+    kicker: "Win the work",
+    body: "Discovery that finds the real problem, demos built in days rather "
+      + "than decks, proofs of concept scoped to answer the buyer's actual "
+      + "question, and proposals a delivery team can stand behind. Comfortable "
+      + "in front of a CIO, a risk committee or an engineer.",
   },
-] as const;
-
-const LAYERS = [
   {
     icon: Headset,
-    accent: "blue",
-    title: "AI contact centres",
-    kicker: "The entry point",
-    body: "Amazon Connect + Nova Sonic real-time voice + Bedrock agents. "
-      + "Answers with no queue, verifies the caller server-side — the agent "
-      + "cannot act on an unverified caller — resolves L1 requests "
-      + "end-to-end, and escalates to a human with the transcript and "
-      + "context already loaded. Runs alongside your existing phone system: "
-      + "no rip-and-replace.",
-  },
-  {
-    icon: Wrench,
-    accent: "emerald",
-    title: "Autonomous ticket resolution",
-    kicker: "The queue itself",
-    body: "Agents that work the ticket queue in your ITSM — triage, "
-      + "diagnose, resolve, update — against live systems, not a knowledge "
-      + "base, with every action written back to the ticket as an audit "
-      + "trail.",
-  },
-  {
-    icon: FileText,
     accent: "violet",
-    title: "Internal agent layers",
-    kicker: "The relationship",
-    body: "Longer-running agents for bids, presales and back-office "
-      + "operations. The contact centre is the way in; the agentic platform "
-      + "is the relationship.",
+    title: "Contact centres and Amazon Connect",
+    kicker: "Deep specialism",
+    body: "The new Connect stack — Nova Sonic voice, agentic flows, Q in "
+      + "Connect, Bedrock behind it. AI front doors that verify callers, act "
+      + "on real systems and hand off to humans with full context. Migrations "
+      + "from legacy estates, and the AI layer on estates already on Connect.",
+    href: "/msp",
   },
 ] as const;
 
-const ENGAGEMENT = [
+const HOW = [
   {
     n: "01",
-    title: "Discovery and foundation",
-    body: "In your own AWS account from day one — identity, integrations and "
-      + "the authorisation model come first, not last.",
+    title: "As an associate in your team",
+    body: "Pre-sales, solutions architecture or hands-on build, embedded with "
+      + "an AWS partner, SI, vendor or end client. Day-rate or fixed "
+      + "workstream, on your paper, under your brand.",
   },
   {
     n: "02",
-    title: "Production workflows",
-    body: "Integrations to your PSA, Microsoft 365 and CRM. Write actions "
-      + "ship disabled and in dry-run; turning one on takes an explicit "
-      + "confirmation that states its blast radius.",
+    title: "As a fixed-price workstream",
+    body: "A scoped deliverable — a proof of concept, an agent, an integration, "
+      + "a migration phase — priced and owned end to end, with handover "
+      + "documentation as part of the price.",
   },
   {
     n: "03",
-    title: "Human handoff and agent workspace",
-    body: "Warm transfer with the transcript, customer profile and ticket "
-      + "context already loaded — nobody starts from zero.",
-  },
-  {
-    n: "04",
-    title: "Documentation, runbooks, handover",
-    body: "Fixed price, phased payments. You own all code and IP.",
+    title: "Never around you",
+    body: "Partner work runs under NDA and non-solicitation as standard. We do "
+      + "not approach a partner's clients, and we say so in writing before "
+      + "the first day.",
   },
 ] as const;
 
-/** Every figure traces to marketing/FACTS.md in the platform repo. No prices
- *  (unsettled), no uptime/SLA/accuracy (unmeasured), no client names. */
+/** Every figure traces to a dated run on real systems (marketing/FACTS.md
+ *  in the platform repo). No client names, no uptime/SLA/accuracy claims. */
 const PROOF = [
   {
     icon: Timer,
     accent: "blue",
     value: "~1m51s",
-    label: "to onboard a client",
-    note: "Tenant, app consent, users, PSA join key and verified agent "
-      + "access — one CLI run from one config file, and re-runs are "
-      + "idempotent.",
+    label: "to onboard a client tenant",
+    note: "Tenant, app consent, users, join key and verified agent access — "
+      + "one CLI run from one config file. Idempotent on re-run.",
   },
   {
     icon: Zap,
     accent: "emerald",
     value: "~75s",
     label: "cloud-side stack deploy",
-    note: "The full client stack — MCP gateway, gated action tools, "
-      + "container runtime, roles — from one config file. Torn down again "
-      + "to verified zero residue.",
+    note: "Gateway, gated action tools, container runtime and roles from one "
+      + "config file — then torn down to verified zero residue.",
   },
   {
     icon: ShieldX,
@@ -152,8 +114,7 @@ const PROOF = [
     value: "12 attacks",
     label: "every one refused",
     note: "A social-engineering and prompt-injection suite runs against the "
-      + "live agent — impersonation, authority spoofing, urgency, "
-      + "instruction override — as a regression check on every change.",
+      + "live agent as a regression check on every change.",
   },
   {
     icon: Lock,
@@ -161,8 +122,7 @@ const PROOF = [
     value: "17 checks",
     label: "negative authorisation",
     note: "A suite proving every gate denies — verified caller, known "
-      + "contact, same client, that client's tenant only — from the first "
-      + "real-world service-desk deployment.",
+      + "contact, same client, own tenant only.",
   },
 ] as const;
 
@@ -188,21 +148,21 @@ export default function Home() {
                 variant="outline"
                 className="mb-4 border-white/30 bg-white/10 text-[11px] tracking-wide text-white"
               >
-                Agentic Amazon Connect — UK delivery
+                AI architecture · pre-sales · delivery — on AWS, UK
               </Badge>
               <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                The UK specialists in
-                <br className="hidden sm:block" /> agentic Amazon Connect.
+                AI that makes it
+                <br className="hidden sm:block" /> to production.
               </h1>
               <p className="mt-5 max-w-2xl text-lg text-white/80">
-                Connect&apos;s second act is here — Nova Sonic voice, agentic
-                flows, Bedrock AgentCore. We design, build and hand over AI
-                contact centres that{" "}
+                An independent AI practice working with AWS partners, systems
+                integrators and end clients — as{" "}
                 <span className="font-medium text-white">
-                  verify callers, act on real systems, and prove every
-                  authorisation
-                </span>{" "}
-                — delivered in your own AWS account.
+                  solutions architect, pre-sales lead or hands-on builder
+                </span>
+                . Agentic systems on Bedrock and AgentCore, with a deep
+                specialism in the new Amazon Connect stack. Regulated
+                environments welcome.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -212,7 +172,7 @@ export default function Home() {
                   className="bg-[#FF9900] text-[#12233b] hover:bg-[#ffad33]"
                 >
                   <Link href="#contact">
-                    Book a call <ArrowRight className="ml-2 h-4 w-4" />
+                    Get in touch <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
@@ -221,7 +181,7 @@ export default function Home() {
                   variant="outline"
                   className="border-white/30 bg-white/20 text-white hover:bg-white/30 hover:text-white"
                 >
-                  <Link href="/demo">Watch a real agent work</Link>
+                  <Link href="/demo">See a real agent work</Link>
                 </Button>
               </div>
 
@@ -246,80 +206,71 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ---------- the position ---------- */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight">
-          Plenty of firms do Amazon Connect. The new stack is a different job.
-        </h2>
+      {/* ---------- what we do ---------- */}
+      <section id="services" className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-2xl font-bold tracking-tight">What we do</h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Three things we&apos;d rather demonstrate on your systems than assert
-          on a slide.
+          Three ways in. Most engagements use two of them.
         </p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {CLAIMS.map((c) => {
-            const a = ACCENTS[c.accent];
+          {OFFERS.map((o) => {
+            const a = ACCENTS[o.accent];
             return (
-              <AccentCard key={c.title} accent={c.accent}>
-                <div className={`inline-flex rounded-xl p-2.5 ${a.tile}`}>
-                  <c.icon className="h-5 w-5" />
+              <AccentCard key={o.title} accent={o.accent}>
+                <div className="flex items-center justify-between">
+                  <div className={`inline-flex rounded-xl p-2.5 ${a.tile}`}>
+                    <o.icon className="h-5 w-5" />
+                  </div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {o.kicker}
+                  </p>
                 </div>
                 <h3 className={`mt-4 text-lg font-semibold ${a.text}`}>
-                  {c.title}
+                  {o.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {c.body}
+                  {o.body}
                 </p>
+                {"href" in o && (
+                  <Link
+                    href={o.href}
+                    className={`mt-4 inline-flex items-center gap-1 text-sm font-medium ${a.text} hover:underline`}
+                  >
+                    Service-desk automation <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                )}
               </AccentCard>
             );
           })}
         </div>
       </section>
 
-      {/* ---------- what we deliver ---------- */}
-      <section id="delivery" className="border-y bg-muted/30">
+      {/* ---------- how we work ---------- */}
+      <section id="how" className="border-y bg-muted/30">
         <div className="mx-auto max-w-6xl px-6 py-16">
-          <h2 className="text-2xl font-bold tracking-tight">What we deliver</h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Three expanding layers — for Connect estates, legacy
-            contact-centre migrations, and public sector.
-          </p>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {LAYERS.map((l) => {
-              const a = ACCENTS[l.accent];
-              return (
-                <AccentCard key={l.title} accent={l.accent}>
-                  <div className="flex items-center justify-between">
-                    <div className={`inline-flex rounded-xl p-2.5 ${a.tile}`}>
-                      <l.icon className="h-5 w-5" />
-                    </div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      {l.kicker}
-                    </p>
-                  </div>
-                  <h3 className={`mt-4 text-lg font-semibold ${a.text}`}>
-                    {l.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {l.body}
-                  </p>
-                </AccentCard>
-              );
-            })}
+          <div className="flex items-start gap-5">
+            <div className="hidden rounded-xl bg-blue-100 p-2.5 text-[#1F4E79] sm:inline-flex">
+              <Handshake className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight">
+                How we work with partners
+              </h2>
+              <p className="mt-2 max-w-2xl text-muted-foreground">
+                Most of our work is through AWS partners and integrators.
+                That&apos;s by design, and we protect it.
+              </p>
+            </div>
           </div>
-
-          <h3 className="mt-14 text-xl font-bold tracking-tight">
-            How an engagement runs
-          </h3>
-          <div className="mt-6 divide-y rounded-xl border bg-card">
-            {ENGAGEMENT.map((s) => (
+          <div className="mt-8 divide-y rounded-xl border bg-card">
+            {HOW.map((s) => (
               <div key={s.n} className="flex gap-5 p-6">
                 <span className="font-mono text-sm font-semibold text-[#1F4E79]">
                   {s.n}
                 </span>
                 <div>
-                  <h4 className="font-semibold">{s.title}</h4>
+                  <h3 className="font-semibold">{s.title}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
                 </div>
               </div>
@@ -327,10 +278,9 @@ export default function Home() {
           </div>
           <p className="mt-5 flex items-start gap-2.5 text-sm text-muted-foreground">
             <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-            Nothing changes state because a model decided it should. The
-            authorisation gates live in the actions, not in the prompt — a
-            model cannot argue its way past them, because the model is not the
-            thing doing the checking.
+            Clients own all code and IP at handover. Write actions in anything
+            we build ship disabled and in dry-run — going live is an explicit,
+            documented step.
           </p>
         </div>
       </section>
@@ -338,12 +288,12 @@ export default function Home() {
       {/* ---------- proof ---------- */}
       <section id="proof" className="mx-auto max-w-6xl px-6 py-16">
         <h2 className="text-2xl font-bold tracking-tight">
-          Proof, not promises
+          Recent work, measured
         </h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Each of these happened on a dated run against real systems. No
-          uptime, SLA or accuracy figures appear here — every number traces
-          to something that actually ran.
+          From an agentic service-desk platform we built and run. Each figure
+          is a dated run against real systems — no uptime, SLA or accuracy
+          claims, because we don&apos;t make numbers up.
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
@@ -381,14 +331,14 @@ export default function Home() {
                 <Bot className="h-5 w-5" />
               </div>
               <h2 className="mt-5 text-2xl font-bold tracking-tight">
-                Don&apos;t take a slide&apos;s word for it.
+                The demo is the CV.
               </h2>
               <p className="mt-3 text-white/80">
                 A real agent runs behind this site: an Amazon Connect chat that
                 dispatches to a Claude agent on Bedrock AgentCore and writes
-                its findings back to a ticket in a sandboxed demo desk. Start
-                it from your browser and watch what it does — and what it
-                refuses.
+                its findings back to a ticket in a sandboxed desk — with a
+                panel narrating what the system is actually doing. Start it
+                from your browser.
               </p>
               <Button
                 asChild
@@ -404,58 +354,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- partners ---------- */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
-          <div className="flex items-start gap-5">
-            <div className="hidden rounded-xl bg-blue-100 p-2.5 text-[#1F4E79] sm:inline-flex">
-              <Handshake className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-[#1F4E79]">
-                Delivery capacity for partners and primes
-              </h2>
-              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">
-                If you resell Connect or prime CX programmes and need agentic
-                delivery capacity, grantedison delivers workstreams — not
-                bodies. Fixed-price or T&amp;M, under your brand or alongside
-                your team, with one accountable point of delivery: SC-cleared
-                and UK-based.
-              </p>
-              <Button asChild variant="outline" className="mt-5">
-                <Link href="#contact">
-                  Talk about capacity <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ---------- contact ---------- */}
-      <section id="contact" className="border-t bg-muted/30">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+      <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">
               Start a conversation
             </h2>
             <p className="mt-3 max-w-md text-muted-foreground">
-              A Connect estate you want the AI layer on, a legacy
-              Avaya/Genesys/Mitel migration, a ticketed service desk, or a
-              programme that needs delivery capacity — tell us what
-              you&apos;re looking at and we&apos;ll come back with something
-              concrete.
+              A pre-sales seat to fill, an architecture that needs an owner, a
+              proof of concept that has to land, or a Connect estate that
+              wants the AI layer — tell us what you&apos;re looking at and
+              we&apos;ll come back with something concrete.
             </p>
             <div className="mt-6 space-y-3 text-sm text-muted-foreground">
               <p className="flex items-start gap-2.5">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                Demos always ready — the live demo on this site is the real
-                stack, and a deeper walkthrough takes one call.
+                Available to partners and integrators as an associate — day
+                rate or fixed workstream.
               </p>
               <p className="flex items-start gap-2.5">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                Direct or via your existing partner — both work.
+                grantedison is the practice of Dale Grant — AWS Certified
+                Solutions Architect Professional, SC cleared.
               </p>
               <p className="mt-5">
                 Prefer email?{" "}
@@ -471,7 +392,6 @@ export default function Home() {
           <div className="rounded-xl border bg-card p-6 shadow-sm sm:p-8">
             <ContactForm />
           </div>
-        </div>
         </div>
       </section>
 

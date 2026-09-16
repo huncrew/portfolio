@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "grantedison — the UK specialists in agentic Amazon Connect",
+  title: "grantedison — AI architecture, pre-sales and delivery on AWS",
   description:
-    "AI contact centres and agentic automation on the new Amazon Connect "
-    + "stack — Nova Sonic voice, Bedrock AgentCore, provable authorisation "
-    + "gates — designed, built and handed over in your own AWS account.",
+    "An independent UK AI practice working with AWS partners, integrators "
+    + "and end clients — solutions architecture, pre-sales and hands-on "
+    + "build of agentic systems on Bedrock and AgentCore, with a deep "
+    + "specialism in the new Amazon Connect stack. SC cleared.",
   metadataBase: new URL("https://grantedison.com"),
   openGraph: {
-    title: "grantedison — the UK specialists in agentic Amazon Connect",
+    title: "grantedison — AI architecture, pre-sales and delivery on AWS",
     description:
-      "AI contact centres and agentic automation on the new Amazon Connect "
-      + "stack, delivered in your own AWS account. SC cleared, UK-based.",
+      "Solutions architecture, pre-sales and delivery of agentic AI on AWS, "
+      + "through partners or direct. SC cleared, UK-based.",
     url: "https://grantedison.com",
     siteName: "grantedison",
     type: "website",
