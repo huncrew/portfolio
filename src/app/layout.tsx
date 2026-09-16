@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dale Grant | Principal AI Systems Architect",
+  title: "Dale Grant | AI Solutions Architect & Pre-sales Lead",
   description:
-    "Building agentic AI systems, real-time ML pipelines, and production-grade AWS architectures. Specializing in LangGraph, Bedrock, RAG, and enterprise cloud solutions.",
+    "AI solutions architecture, pre-sales and Amazon Connect for financial services and the public sector. Agentic systems on Bedrock and AgentCore — with a live agent demo. SC cleared, UK.",
   keywords: [
     "AI Architect",
     "AWS Architect",

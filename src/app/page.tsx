@@ -20,6 +20,7 @@ import {
   Play,
   X,
 } from "lucide-react";
+import { ContactForm } from "@/components/contact-form";
 
 // Animated background component
 const AnimatedBackground = () => (
@@ -128,18 +129,34 @@ const portfolioProjects = [
   {
     id: "oasify",
     title: "Oasify",
-    subtitle: "AI Builder Platform",
+    subtitle: "Gated Agentic Service-Desk Platform",
     description:
-      "No-code AI application builder enabling rapid deployment of custom AI workflows, chatbots, and automation systems with enterprise-grade security and scalability.",
+      "AI agents that resolve service-desk tickets end-to-end — password resets, unlocks, access diagnostics — with authorisation re-checked in code inside every action, deployed in the customer's own AWS account. Adversarially tested; every attack refused.",
     url: "https://oasify.ai",
     gradient: "from-blue-500 to-indigo-500",
     features: [
-      "No-Code AI Builder",
-      "Custom Workflows",
-      "Enterprise Security",
-      "Rapid Deployment",
+      "Claude Agent SDK on AgentCore",
+      "MCP Tools via AgentCore Gateway",
+      "Provable Authorisation Gates",
+      "Own-Cloud Deployment",
     ],
-    tech: ["React", "AWS", "Serverless", "AI/ML", "Real-time"],
+    tech: ["Bedrock AgentCore", "Claude Agent SDK", "MCP", "Lambda", "Entra / Graph"],
+  },
+  {
+    id: "connect",
+    title: "Agentic Amazon Connect",
+    subtitle: "Live demo — a real agent, in your browser",
+    description:
+      "An Amazon Connect chat that verifies identity, dispatches to a Claude agent on Bedrock AgentCore and writes its findings back to a ticket — with a panel narrating what the system is actually doing. Plus a grounded Q&A agent that answers only from an approved set.",
+    url: "/demo",
+    gradient: "from-cyan-500 to-blue-600",
+    features: [
+      "Nova Sonic / Q in Connect",
+      "Async Agent Dispatch",
+      "Gates Outside the Model",
+      "Rate-limited Public Sandbox",
+    ],
+    tech: ["Amazon Connect", "Bedrock AgentCore", "Claude", "Lambda", "DynamoDB"],
   },
 ];
 
@@ -225,7 +242,13 @@ const expertise = [
     icon: Bot,
     title: "Agentic AI Systems",
     description:
-      "Multi-agent orchestration with LangGraph, Bedrock, and custom frameworks for autonomous decision-making",
+      "Claude Agent SDK on Bedrock AgentCore, MCP tool layers, LangGraph where control flow must be deterministic — with authorisation enforced in code, not in the prompt",
+  },
+  {
+    icon: MessageSquare,
+    title: "Amazon Connect — the new stack",
+    description:
+      "Nova Sonic voice, Q in Connect, agentic flows and AgentCore behind them. AI front doors that verify callers, act on real systems and hand off with full context",
   },
   {
     icon: Workflow,
@@ -247,9 +270,9 @@ const expertise = [
   },
   {
     icon: Shield,
-    title: "Enterprise Security",
+    title: "Regulated Environments",
     description:
-      "Security-first design for regulated industries, government contracts, and compliance requirements",
+      "SC cleared. Security-first design for financial services and government — audit trails, data residency, human-in-the-loop by default",
   },
   {
     icon: Zap,
@@ -304,6 +327,13 @@ export default function Home() {
                 {item}
               </a>
             ))}
+            <a
+              href="/demo"
+              className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live demo
+            </a>
           </div>
           <div className="flex items-center gap-4">
             <a
@@ -343,7 +373,7 @@ export default function Home() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400 text-sm">
               <Cpu size={16} />
-              Available for AI & Cloud Architecture Contracts
+              AI pre-sales · Solutions architecture · Amazon Connect — SC cleared
             </span>
           </motion.div>
 
@@ -354,11 +384,11 @@ export default function Home() {
             className="text-5xl md:text-7xl font-bold mb-6"
           >
             <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
-              Principal AI
+              AI Solutions Architect
             </span>
             <br />
             <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Systems Architect
+              &amp; Pre-sales Lead
             </span>
           </motion.h1>
 
@@ -368,17 +398,14 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Building{" "}
-            <span className="text-white font-medium">agentic AI systems</span>,{" "}
+            I design, sell and build{" "}
+            <span className="text-white font-medium">agentic AI systems on AWS</span>{" "}
+            — Bedrock, AgentCore, the new Amazon Connect stack — for{" "}
             <span className="text-white font-medium">
-              real-time ML pipelines
+              financial services and the public sector
             </span>
-            , and{" "}
-            <span className="text-white font-medium">
-              production-grade AWS architectures
-            </span>{" "}
-            for enterprise clients across customer service, logistics, and
-            finance.
+            . Comfortable in front of a CIO, a risk committee or an engineer,
+            and hands-on enough to ship what I propose.
           </motion.p>
 
           <motion.div
@@ -388,10 +415,11 @@ export default function Home() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
             <a
-              href="#portfolio"
+              href="/demo"
               className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
             >
-              View Portfolio
+              <Play size={20} />
+              Watch a real agent work
               <ArrowRight
                 size={20}
                 className="group-hover:translate-x-1 transition-transform"
@@ -677,36 +705,37 @@ export default function Home() {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                How I Can Help
+                Roles I Take On
               </span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              From architecture design to production deployment
+              Contract or associate, through AWS partners and integrators or
+              direct — with a focus on financial services and the public sector
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: Bot,
-                title: "Agentic AI Development",
+                icon: BarChart3,
+                title: "AI Pre-sales & Solution Design",
                 description:
-                  "Design and build multi-agent systems using LangGraph, Bedrock, and custom orchestration frameworks. From autonomous customer service to CloudOps automation.",
-                cta: "Build AI Agents",
+                  "Discovery that finds the real problem, demos built in days rather than decks, proofs of concept scoped to answer the buyer's actual question, and proposals a delivery team can stand behind.",
+                cta: "Fill a pre-sales seat",
+              },
+              {
+                icon: Bot,
+                title: "AI Solutions Architecture",
+                description:
+                  "Agentic systems that reach production: Claude Agent SDK on Bedrock AgentCore, MCP tool layers with authorisation in code, RAG and knowledge systems, and the AWS landing zone underneath — written by someone who ships it.",
+                cta: "Own an architecture",
               },
               {
                 icon: MessageSquare,
-                title: "Contact Centre AI",
+                title: "Amazon Connect & Contact Centre AI",
                 description:
-                  "Enterprise voice agents, real-time transcription, sentiment analysis, and knowledge-base integration using AWS Connect, Lex, and Bedrock.",
-                cta: "Modernize Support",
-              },
-              {
-                icon: BarChart3,
-                title: "RAG & Analytics",
-                description:
-                  "Semantic search, document intelligence, and retrieval-augmented generation systems for finance, compliance, and enterprise knowledge management.",
-                cta: "Unlock Your Data",
+                  "The new Connect stack — Nova Sonic voice, Q in Connect, agentic flows, Bedrock behind them. AI front doors that verify callers, act on real systems and hand off to humans with full context. Migrations from legacy estates included.",
+                cta: "Add the AI layer",
               },
             ].map((service, index) => (
               <motion.div
@@ -751,58 +780,21 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Looking for an AI architect to design and deliver your next
-              production system? Let&apos;s discuss how I can help transform
-              your vision into reality.
+              A pre-sales seat to fill, an architecture that needs an owner, a
+              proof of concept that has to land, or a Connect estate that wants
+              the AI layer — tell me what you&apos;re looking at.
             </p>
 
             <GlassCard className="p-8 md:p-12 max-w-2xl mx-auto" hover={false}>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      placeholder="Your Email"
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Company / Project"
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    placeholder="Tell me about your project..."
-                    rows={5}
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl font-medium text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
 
               <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6">
                 <a
-                  href="mailto:dale@dalegrant.dev"
+                  href="mailto:dale@grantedison.com"
                   className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
                 >
                   <Mail size={20} />
-                  dale@dalegrant.dev
+                  dale@grantedison.com
                 </a>
                 <a
                   href="https://linkedin.com/in/dalebgrant"
