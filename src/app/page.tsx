@@ -1,481 +1,916 @@
-import Link from "next/link";
+"use client";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
-  Award,
-  Bot,
-  CheckCircle2,
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  ChevronDown,
+  Cpu,
+  Workflow,
+  Database,
   Cloud,
-  FileText,
-  Handshake,
-  Headset,
-  Lock,
-  MapPin,
-  ShieldCheck,
-  ShieldX,
-  Timer,
-  Waypoints,
-  Wrench,
+  Bot,
   Zap,
+  Shield,
+  BarChart3,
+  MessageSquare,
+  Play,
+  X,
 } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ContactForm } from "@/components/contact-form";
-import {
-  AccentCard,
-  ACCENTS,
-  CONTACT,
-  GRID,
-  HeroNav,
-  SiteFooter,
-} from "@/components/site";
+// Animated background component
+const AnimatedBackground = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse" />
+    <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
+    <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-full blur-3xl animate-pulse delay-500" />
+  </div>
+);
 
-/** Positioning per the business source of truth: early to Connect's second
- *  act; the crowd competing over the old stack is not the competition. */
-const CLAIMS = [
+// Floating particles
+const Particles = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
+        initial={{
+          x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
+          y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 800),
+        }}
+        animate={{
+          y: [null, -20, 20],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{
+          duration: 3 + Math.random() * 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: Math.random() * 2,
+        }}
+      />
+    ))}
+  </div>
+);
+
+// Glass card component
+const GlassCard = ({
+  children,
+  className = "",
+  hover = true,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  hover?: boolean;
+}) => (
+  <motion.div
+    whileHover={hover ? { scale: 1.02, y: -4 } : {}}
+    className={`relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden ${className}`}
+  >
+    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+    <div className="relative z-10">{children}</div>
+  </motion.div>
+);
+
+// Portfolio project data
+const portfolioProjects = [
   {
-    icon: Waypoints,
-    accent: "blue",
-    title: "Early, not late",
-    body: "Amazon re-platformed Connect in 2026 — Nova Sonic speech-to-speech "
-      + "voice, agentic flows, Bedrock AgentCore. Most delivery expertise in "
-      + "the market was built for the previous stack. We built agentic "
-      + "delivery before it was native in Connect, and have a real build on "
-      + "the new stack. grantedison is not late to Connect; it is early to "
-      + "Connect's second act.",
+    id: "cloudops",
+    title: "CloudOps Agent Studio",
+    subtitle: "Agentic AWS Infrastructure Management",
+    description:
+      "Multi-agent platform orchestrating Well-Architected reviews, cost optimization, and AI workflow design. Features LangGraph + Bedrock orchestration with automated Terraform generation.",
+    url: "https://ai.agents.dalegrant.dev",
+    gradient: "from-cyan-500 to-emerald-500",
+    features: [
+      "Well-Architected Advisor",
+      "Cost Strategist Agent",
+      "AI Workflow Designer",
+      "Automated IaC Generation",
+    ],
+    tech: ["AWS Bedrock", "LangGraph", "Lambda", "DynamoDB", "Terraform"],
   },
   {
-    icon: ShieldCheck,
-    accent: "violet",
-    title: "Gates outside the model",
-    body: "Callers are verified deterministically — never by the LLM — and "
-      + "every action re-checks its own authority at execution time. The "
-      + "deny paths are covered by an automated test suite that runs on "
-      + "every change, and the two-layer refusal is demonstrable live.",
+    id: "finance",
+    title: "MLOps Finance Platform",
+    subtitle: "Regulatory Compliance RAG System",
+    description:
+      "Enterprise RAG platform for financial document intelligence. Automated compliance monitoring against Basel III, GDPR, SOX with real-time risk scoring and natural language queries.",
+    url: "https://ai.finance.dalegrant.dev",
+    gradient: "from-purple-500 to-pink-500",
+    features: [
+      "Document Intelligence",
+      "Multi-Framework Compliance",
+      "Knowledge Base RAG",
+      "Real-time Monitoring",
+    ],
+    tech: ["AWS SageMaker", "Vector Stores", "FAISS", "LlamaIndex", "S3"],
+  },
+  {
+    id: "marketing",
+    title: "AI Marketing Automation",
+    subtitle: "Intelligent Campaign Orchestration",
+    description:
+      "End-to-end marketing automation platform with AI-driven content generation, audience segmentation, and campaign optimization using real-time analytics and predictive modeling.",
+    url: "https://ai.marketing.dalegrant.dev",
+    gradient: "from-orange-500 to-red-500",
+    features: [
+      "AI Content Generation",
+      "Audience Segmentation",
+      "Campaign Optimization",
+      "Predictive Analytics",
+    ],
+    tech: ["AWS Bedrock", "EventBridge", "Lambda", "DynamoDB", "OpenAI"],
+  },
+  {
+    id: "oasify",
+    title: "Oasify",
+    subtitle: "AI Builder Platform",
+    description:
+      "No-code AI application builder enabling rapid deployment of custom AI workflows, chatbots, and automation systems with enterprise-grade security and scalability.",
+    url: "https://oasify.ai",
+    gradient: "from-blue-500 to-indigo-500",
+    features: [
+      "No-Code AI Builder",
+      "Custom Workflows",
+      "Enterprise Security",
+      "Rapid Deployment",
+    ],
+    tech: ["React", "AWS", "Serverless", "AI/ML", "Real-time"],
+  },
+];
+
+// Experience timeline data
+const experience = [
+  {
+    period: "2025 - Present",
+    title: "Principal AI Systems Architect",
+    company: "Self-employed",
+    type: "Independent Consultant",
+    highlights: [
+      "Real-time media analysis pipelines (live streaming, low-latency)",
+      "Live transcription & translation systems (AWS Transcribe/Translate)",
+      "ML model training & fine-tuning (SageMaker, distillation)",
+      "Agent-based CloudOps & security automation",
+      "RAG, semantic search, vector pipelines (FAISS, LlamaIndex)",
+    ],
+  },
+  {
+    period: "2024 - 2025",
+    title: "Lead AI / GenAI Architect",
+    company: "ROCK",
+    type: "Contract",
+    highlights: [
+      "AI-powered contact centre for government customers",
+      "Multi-tenant, low-latency architectures",
+      "Voice agents & knowledge-base assistants",
+      "Model fine-tuning & pre-training",
+      "Regulated, security-sensitive environments",
+    ],
+  },
+  {
+    period: "2022 - 2024",
+    title: "AI Systems Architect / AWS Architect",
+    company: "Chakray Consulting",
+    type: "Contract",
+    highlights: [
+      "AI-driven serverless platforms (finance & government)",
+      "RAG pipelines & semantic search systems",
+      "Real-time event-driven finance systems",
+      "Government contract experience",
+    ],
+  },
+  {
+    period: "2021 - 2022",
+    title: "AI Solutions Architect",
+    company: "World Economic Forum",
+    type: "Contract",
+    highlights: [
+      "AI-driven workflow automation",
+      "Developer productivity tooling",
+      "AI-assisted coding pipelines",
+      "Architecture leadership",
+    ],
+  },
+  {
+    period: "2016 - 2021",
+    title: "AI / AWS Architect",
+    company: "Accenture",
+    type: "Full-time",
+    highlights: [
+      "Customer-service AI agents for L'Oréal & Vodafone",
+      "Voice-based AI agents & conversational workflows",
+      "Logistics systems (routing, orchestration)",
+      "E-commerce automation (Shopify integrations)",
+    ],
+  },
+];
+
+// Client logos (using text for now, can be replaced with actual logos)
+const clients = [
+  { name: "Formula 1", abbrev: "F1" },
+  { name: "Vodafone", abbrev: "Vodafone" },
+  { name: "L'Oréal", abbrev: "L'Oréal" },
+  { name: "World Economic Forum", abbrev: "WEF" },
+  { name: "Accenture", abbrev: "Accenture" },
+  { name: "UK Government", abbrev: "Gov.UK" },
+];
+
+// Expertise areas
+const expertise = [
+  {
+    icon: Bot,
+    title: "Agentic AI Systems",
+    description:
+      "Multi-agent orchestration with LangGraph, Bedrock, and custom frameworks for autonomous decision-making",
+  },
+  {
+    icon: Workflow,
+    title: "Real-time Pipelines",
+    description:
+      "Low-latency streaming, live transcription/translation, and event-driven architectures at scale",
+  },
+  {
+    icon: Database,
+    title: "RAG & Vector Search",
+    description:
+      "Semantic search, knowledge bases, and retrieval-augmented generation with FAISS, LlamaIndex",
   },
   {
     icon: Cloud,
-    accent: "emerald",
-    title: "Your account, your IP",
-    body: "Everything is built in your own AWS account: agents on Bedrock "
-      + "AgentCore, tools as single-purpose Lambdas behind an MCP gateway. "
-      + "Fixed price, phased payments — and you own all code and IP at "
-      + "handover.",
-  },
-] as const;
-
-const LAYERS = [
-  {
-    icon: Headset,
-    accent: "blue",
-    title: "AI contact centres",
-    kicker: "The entry point",
-    body: "Amazon Connect + Nova Sonic real-time voice + Bedrock agents. "
-      + "Answers with no queue, verifies the caller server-side — the agent "
-      + "cannot act on an unverified caller — resolves L1 requests "
-      + "end-to-end, and escalates to a human with the transcript and "
-      + "context already loaded. Runs alongside your existing phone system: "
-      + "no rip-and-replace.",
+    title: "AWS Architecture",
+    description:
+      "Serverless, event-driven systems using Lambda, Bedrock, SageMaker, Connect, and CDK",
   },
   {
-    icon: Wrench,
-    accent: "emerald",
-    title: "Autonomous ticket resolution",
-    kicker: "The queue itself",
-    body: "Agents that work the ticket queue in your ITSM — triage, "
-      + "diagnose, resolve, update — against live systems, not a knowledge "
-      + "base, with every action written back to the ticket as an audit "
-      + "trail.",
-  },
-  {
-    icon: FileText,
-    accent: "violet",
-    title: "Internal agent layers",
-    kicker: "The relationship",
-    body: "Longer-running agents for bids, presales and back-office "
-      + "operations. The contact centre is the way in; the agentic platform "
-      + "is the relationship.",
-  },
-] as const;
-
-const ENGAGEMENT = [
-  {
-    n: "01",
-    title: "Discovery and foundation",
-    body: "In your own AWS account from day one — identity, integrations and "
-      + "the authorisation model come first, not last.",
-  },
-  {
-    n: "02",
-    title: "Production workflows",
-    body: "Integrations to your PSA, Microsoft 365 and CRM. Write actions "
-      + "ship disabled and in dry-run; turning one on takes an explicit "
-      + "confirmation that states its blast radius.",
-  },
-  {
-    n: "03",
-    title: "Human handoff and agent workspace",
-    body: "Warm transfer with the transcript, customer profile and ticket "
-      + "context already loaded — nobody starts from zero.",
-  },
-  {
-    n: "04",
-    title: "Documentation, runbooks, handover",
-    body: "Fixed price, phased payments. You own all code and IP.",
-  },
-] as const;
-
-/** Every figure traces to marketing/FACTS.md in the platform repo. No prices
- *  (unsettled), no uptime/SLA/accuracy (unmeasured), no client names. */
-const PROOF = [
-  {
-    icon: Timer,
-    accent: "blue",
-    value: "~1m51s",
-    label: "to onboard a client",
-    note: "Tenant, app consent, users, PSA join key and verified agent "
-      + "access — one CLI run from one config file, and re-runs are "
-      + "idempotent.",
+    icon: Shield,
+    title: "Enterprise Security",
+    description:
+      "Security-first design for regulated industries, government contracts, and compliance requirements",
   },
   {
     icon: Zap,
-    accent: "emerald",
-    value: "~75s",
-    label: "cloud-side stack deploy",
-    note: "The full client stack — MCP gateway, gated action tools, "
-      + "container runtime, roles — from one config file. Torn down again "
-      + "to verified zero residue.",
+    title: "ML Operations",
+    description:
+      "Model training, fine-tuning, distillation, and production deployment with SageMaker",
   },
-  {
-    icon: ShieldX,
-    accent: "amber",
-    value: "12 attacks",
-    label: "every one refused",
-    note: "A social-engineering and prompt-injection suite runs against the "
-      + "live agent — impersonation, authority spoofing, urgency, "
-      + "instruction override — as a regression check on every change.",
-  },
-  {
-    icon: Lock,
-    accent: "violet",
-    value: "17 checks",
-    label: "negative authorisation",
-    note: "A suite proving every gate denies — verified caller, known "
-      + "contact, same client, that client's tenant only — from the first "
-      + "real-world service-desk deployment.",
-  },
-] as const;
+];
 
 export default function Home() {
+  const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const selectedProject = portfolioProjects.find((p) => p.id === activeProject);
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* ---------- hero ---------- */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-[#12233b] via-[#1F4E79] to-[#2f6ea8] text-white">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{ backgroundImage: GRID }}
-          aria-hidden
-        />
-        <HeroNav />
+    <div className="bg-slate-950 text-white min-h-screen overflow-x-hidden">
+      <AnimatedBackground />
+      <Particles />
 
-        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-10">
-          <div className="flex items-start gap-5">
-            <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/20 backdrop-blur-xl sm:flex">
-              <Bot className="h-8 w-8" />
-            </div>
-            <div className="max-w-3xl">
-              <Badge
-                variant="outline"
-                className="mb-4 border-white/30 bg-white/10 text-[11px] tracking-wide text-white"
+      {/* Navigation */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-slate-950/80 backdrop-blur-xl border-b border-white/10"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent"
+          >
+            Dale Grant
+          </motion.div>
+          <div className="hidden md:flex items-center gap-8">
+            {["Expertise", "Portfolio", "Experience", "Contact"].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-sm text-gray-400 hover:text-white transition-colors"
               >
-                Agentic Amazon Connect — UK delivery
-              </Badge>
-              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                The UK specialists in
-                <br className="hidden sm:block" /> agentic Amazon Connect.
-              </h1>
-              <p className="mt-5 max-w-2xl text-lg text-white/80">
-                Connect&apos;s second act is here — Nova Sonic voice, agentic
-                flows, Bedrock AgentCore. We design, build and hand over AI
-                contact centres that{" "}
-                <span className="font-medium text-white">
-                  verify callers, act on real systems, and prove every
-                  authorisation
-                </span>{" "}
-                — delivered in your own AWS account.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-[#FF9900] text-[#12233b] hover:bg-[#ffad33]"
-                >
-                  <Link href="#contact">
-                    Book a call <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 bg-white/20 text-white hover:bg-white/30 hover:text-white"
-                >
-                  <Link href="/demo">Watch a real agent work</Link>
-                </Button>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/70">
-                <span className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4" /> SC cleared
-                </span>
-                <span className="flex items-center gap-2">
-                  <Award className="h-4 w-4" /> AWS Certified Solutions
-                  Architect — Professional
-                </span>
-                <span className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" /> UK-based
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-                  A live agent runs behind this site
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* ---------- the position ---------- */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight">
-          Plenty of firms do Amazon Connect. The new stack is a different job.
-        </h2>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Three things we&apos;d rather demonstrate on your systems than assert
-          on a slide.
-        </p>
-
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {CLAIMS.map((c) => {
-            const a = ACCENTS[c.accent];
-            return (
-              <AccentCard key={c.title} accent={c.accent}>
-                <div className={`inline-flex rounded-xl p-2.5 ${a.tile}`}>
-                  <c.icon className="h-5 w-5" />
-                </div>
-                <h3 className={`mt-4 text-lg font-semibold ${a.text}`}>
-                  {c.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {c.body}
-                </p>
-              </AccentCard>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ---------- what we deliver ---------- */}
-      <section id="delivery" className="border-y bg-muted/30">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <h2 className="text-2xl font-bold tracking-tight">What we deliver</h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Three expanding layers — for Connect estates, legacy
-            contact-centre migrations, and public sector.
-          </p>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {LAYERS.map((l) => {
-              const a = ACCENTS[l.accent];
-              return (
-                <AccentCard key={l.title} accent={l.accent}>
-                  <div className="flex items-center justify-between">
-                    <div className={`inline-flex rounded-xl p-2.5 ${a.tile}`}>
-                      <l.icon className="h-5 w-5" />
-                    </div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      {l.kicker}
-                    </p>
-                  </div>
-                  <h3 className={`mt-4 text-lg font-semibold ${a.text}`}>
-                    {l.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {l.body}
-                  </p>
-                </AccentCard>
-              );
-            })}
-          </div>
-
-          <h3 className="mt-14 text-xl font-bold tracking-tight">
-            How an engagement runs
-          </h3>
-          <div className="mt-6 divide-y rounded-xl border bg-card">
-            {ENGAGEMENT.map((s) => (
-              <div key={s.n} className="flex gap-5 p-6">
-                <span className="font-mono text-sm font-semibold text-[#1F4E79]">
-                  {s.n}
-                </span>
-                <div>
-                  <h4 className="font-semibold">{s.title}</h4>
-                  <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
-                </div>
-              </div>
+                {item}
+              </a>
             ))}
           </div>
-          <p className="mt-5 flex items-start gap-2.5 text-sm text-muted-foreground">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-            Nothing changes state because a model decided it should. The
-            authorisation gates live in the actions, not in the prompt — a
-            model cannot argue its way past them, because the model is not the
-            thing doing the checking.
-          </p>
-        </div>
-      </section>
-
-      {/* ---------- proof ---------- */}
-      <section id="proof" className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight">
-          Proof, not promises
-        </h2>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Each of these happened on a dated run against real systems. No
-          uptime, SLA or accuracy figures appear here — every number traces
-          to something that actually ran.
-        </p>
-
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
-          {PROOF.map((p) => {
-            const a = ACCENTS[p.accent];
-            return (
-              <AccentCard key={p.label} accent={p.accent}>
-                <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {p.label}
-                  </p>
-                  <p.icon className={`h-4 w-4 ${a.text}`} />
-                </div>
-                <p className={`mt-2 text-2xl font-bold ${a.text}`}>{p.value}</p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                  {p.note}
-                </p>
-              </AccentCard>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ---------- live demo slab ---------- */}
-      <section className="border-y bg-muted/30">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#12233b] via-[#1F4E79] to-[#2f6ea8] p-10 text-white">
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{ backgroundImage: GRID }}
-              aria-hidden
-            />
-            <div className="relative max-w-2xl">
-              <div className="inline-flex rounded-xl border border-white/30 bg-white/20 p-2.5 backdrop-blur-xl">
-                <Bot className="h-5 w-5" />
-              </div>
-              <h2 className="mt-5 text-2xl font-bold tracking-tight">
-                Don&apos;t take a slide&apos;s word for it.
-              </h2>
-              <p className="mt-3 text-white/80">
-                A real agent runs behind this site: an Amazon Connect chat that
-                dispatches to a Claude agent on Bedrock AgentCore and writes
-                its findings back to a ticket in a sandboxed demo desk. Start
-                it from your browser and watch what it does — and what it
-                refuses.
-              </p>
-              <Button
-                asChild
-                size="lg"
-                className="mt-7 bg-[#FF9900] text-[#12233b] hover:bg-[#ffad33]"
-              >
-                <Link href="/demo">
-                  Run the live demo <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/huncrew"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <Github size={20} />
+            </a>
+            <a
+              href="https://linkedin.com/in/dalebgrant"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <Linkedin size={20} />
+            </a>
+            <a
+              href="#contact"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              Let&apos;s Talk <ArrowRight size={16} />
+            </a>
           </div>
         </div>
-      </section>
+      </motion.nav>
 
-      {/* ---------- partners ---------- */}
-      <section className="mx-auto max-w-6xl px-6 py-16">
-        <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
-          <div className="flex items-start gap-5">
-            <div className="hidden rounded-xl bg-blue-100 p-2.5 text-[#1F4E79] sm:inline-flex">
-              <Handshake className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-[#1F4E79]">
-                Delivery capacity for partners and primes
-              </h2>
-              <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">
-                If you resell Connect or prime CX programmes and need agentic
-                delivery capacity, grantedison delivers workstreams — not
-                bodies. Fixed-price or T&amp;M, under your brand or alongside
-                your team, with one accountable point of delivery: SC-cleared
-                and UK-based.
-              </p>
-              <Button asChild variant="outline" className="mt-5">
-                <Link href="#contact">
-                  Talk about capacity <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400 text-sm">
+              <Cpu size={16} />
+              Available for AI & Cloud Architecture Contracts
+            </span>
+          </motion.div>
 
-      {/* ---------- contact ---------- */}
-      <section id="contact" className="border-t bg-muted/30">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">
-              Start a conversation
-            </h2>
-            <p className="mt-3 max-w-md text-muted-foreground">
-              A Connect estate you want the AI layer on, a legacy
-              Avaya/Genesys/Mitel migration, a ticketed service desk, or a
-              programme that needs delivery capacity — tell us what
-              you&apos;re looking at and we&apos;ll come back with something
-              concrete.
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold mb-6"
+          >
+            <span className="bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+              Principal AI
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Systems Architect
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed"
+          >
+            Building{" "}
+            <span className="text-white font-medium">agentic AI systems</span>,{" "}
+            <span className="text-white font-medium">
+              real-time ML pipelines
+            </span>
+            , and{" "}
+            <span className="text-white font-medium">
+              production-grade AWS architectures
+            </span>{" "}
+            for enterprise clients across customer service, logistics, and
+            finance.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          >
+            <a
+              href="#portfolio"
+              className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+            >
+              View Portfolio
+              <ArrowRight
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </a>
+            <a
+              href="#contact"
+              className="flex items-center gap-2 px-8 py-4 border border-white/20 rounded-full text-lg hover:bg-white/5 transition-colors"
+            >
+              <Mail size={20} />
+              Get in Touch
+            </a>
+          </motion.div>
+
+          {/* Client logos */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="pt-8 border-t border-white/10"
+          >
+            <p className="text-sm text-gray-500 mb-6">
+              Trusted by industry leaders
             </p>
-            <div className="mt-6 space-y-3 text-sm text-muted-foreground">
-              <p className="flex items-start gap-2.5">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                Demos always ready — the live demo on this site is the real
-                stack, and a deeper walkthrough takes one call.
-              </p>
-              <p className="flex items-start gap-2.5">
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                Direct or via your existing partner — both work.
-              </p>
-              <p className="mt-5">
-                Prefer email?{" "}
-                <a
-                  className="font-medium text-[#1F4E79] hover:underline"
-                  href={`mailto:${CONTACT}`}
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+              {clients.map((client) => (
+                <div
+                  key={client.name}
+                  className="text-gray-500 hover:text-gray-300 transition-colors"
                 >
-                  {CONTACT}
-                </a>
-              </p>
+                  <span className="text-lg font-semibold tracking-wide">
+                    {client.abbrev}
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="rounded-xl border bg-card p-6 shadow-sm sm:p-8">
-            <ContactForm />
-          </div>
+          </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <a href="#expertise" className="text-gray-500 hover:text-white transition-colors">
+            <ChevronDown size={32} className="animate-bounce" />
+          </a>
+        </motion.div>
+      </section>
+
+      {/* Expertise Section */}
+      <section id="expertise" className="relative py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Technical Expertise
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Specialized in building AI-powered systems that operate at
+              enterprise scale
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {expertise.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="p-6 h-full">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center mb-4">
+                    <item.icon className="text-cyan-400" size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-400">{item.description}</p>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <SiteFooter />
+      {/* Portfolio Section */}
+      <section id="portfolio" className="relative py-32 px-6 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                AI Portfolio
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Production AI platforms demonstrating agentic workflows, RAG
+              systems, and real-time automation
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {portfolioProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="overflow-hidden group">
+                  {/* Preview header */}
+                  <div
+                    className={`h-48 bg-gradient-to-br ${project.gradient} p-6 relative overflow-hidden`}
+                  >
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="relative z-10">
+                      <h3 className="text-2xl font-bold mb-1">
+                        {project.title}
+                      </h3>
+                      <p className="text-white/80">{project.subtitle}</p>
+                    </div>
+                    {/* Decorative elements */}
+                    <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <button
+                        onClick={() => {
+                          setActiveProject(project.id);
+                          setShowProjectModal(true);
+                        }}
+                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-colors"
+                      >
+                        <Play size={16} />
+                      </button>
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-colors"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <p className="text-gray-400 mb-4">{project.description}</p>
+
+                    {/* Features */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.features.map((feature) => (
+                        <span
+                          key={feature}
+                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-sm"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Tech stack */}
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                      {project.tech.map((tech) => (
+                        <span
+                          key={tech}
+                          className="text-xs text-gray-500 bg-slate-800/50 px-2 py-1 rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="relative py-32 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Experience
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              A decade of building AI and cloud systems for global enterprises
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500 via-purple-500 to-pink-500" />
+
+            {experience.map((exp, index) => (
+              <motion.div
+                key={`${exp.company}-${exp.period}`}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`relative flex flex-col md:flex-row gap-8 mb-12 ${
+                  index % 2 === 0 ? "md:flex-row-reverse" : ""
+                }`}
+              >
+                {/* Timeline dot */}
+                <div className="absolute left-0 md:left-1/2 w-4 h-4 -translate-x-1/2 bg-slate-950 border-2 border-cyan-400 rounded-full z-10" />
+
+                {/* Content */}
+                <div
+                  className={`flex-1 pl-8 md:pl-0 ${
+                    index % 2 === 0 ? "md:pr-16 md:text-right" : "md:pl-16"
+                  }`}
+                >
+                  <GlassCard className="p-6">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <span className="text-cyan-400 text-sm font-medium">
+                        {exp.period}
+                      </span>
+                      <span className="px-2 py-0.5 bg-purple-500/20 text-purple-300 text-xs rounded-full">
+                        {exp.type}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-1">{exp.title}</h3>
+                    <p className="text-gray-400 mb-4">{exp.company}</p>
+                    <ul
+                      className={`space-y-2 ${
+                        index % 2 === 0 ? "md:text-right" : ""
+                      }`}
+                    >
+                      {exp.highlights.map((highlight) => (
+                        <li
+                          key={highlight}
+                          className="text-sm text-gray-400 flex items-start gap-2"
+                        >
+                          <span className="text-cyan-400 mt-1 flex-shrink-0">
+                            •
+                          </span>
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  </GlassCard>
+                </div>
+
+                {/* Spacer for alternating layout */}
+                <div className="hidden md:block flex-1" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services / What I Do Section */}
+      <section className="relative py-32 px-6 bg-slate-900/50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                How I Can Help
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              From architecture design to production deployment
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Bot,
+                title: "Agentic AI Development",
+                description:
+                  "Design and build multi-agent systems using LangGraph, Bedrock, and custom orchestration frameworks. From autonomous customer service to CloudOps automation.",
+                cta: "Build AI Agents",
+              },
+              {
+                icon: MessageSquare,
+                title: "Contact Centre AI",
+                description:
+                  "Enterprise voice agents, real-time transcription, sentiment analysis, and knowledge-base integration using AWS Connect, Lex, and Bedrock.",
+                cta: "Modernize Support",
+              },
+              {
+                icon: BarChart3,
+                title: "RAG & Analytics",
+                description:
+                  "Semantic search, document intelligence, and retrieval-augmented generation systems for finance, compliance, and enterprise knowledge management.",
+                cta: "Unlock Your Data",
+              },
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <GlassCard className="p-8 h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center mb-6">
+                    <service.icon className="text-white" size={28} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-gray-400 mb-6 flex-grow">
+                    {service.description}
+                  </p>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    {service.cta} <ArrowRight size={16} />
+                  </a>
+                </GlassCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="relative py-32 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Let&apos;s Build Something
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+              Looking for an AI architect to design and deliver your next
+              production system? Let&apos;s discuss how I can help transform
+              your vision into reality.
+            </p>
+
+            <GlassCard className="p-8 md:p-12 max-w-2xl mx-auto" hover={false}>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Company / Project"
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Tell me about your project..."
+                    rows={5}
+                    className="w-full px-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl focus:outline-none focus:border-cyan-500/50 transition-colors resize-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-xl font-medium text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+                >
+                  Send Message
+                </button>
+              </form>
+
+              <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a
+                  href="mailto:dale@dalegrant.dev"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Mail size={20} />
+                  dale@dalegrant.dev
+                </a>
+                <a
+                  href="https://linkedin.com/in/dalebgrant"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Linkedin size={20} />
+                  LinkedIn
+                </a>
+                <a
+                  href="https://github.com/huncrew"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <Github size={20} />
+                  GitHub
+                </a>
+              </div>
+            </GlassCard>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-white/10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} Dale Grant. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="https://github.com/huncrew"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-white transition-colors"
+            >
+              <Github size={20} />
+            </a>
+            <a
+              href="https://linkedin.com/in/dalebgrant"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-white transition-colors"
+            >
+              <Linkedin size={20} />
+            </a>
+          </div>
+        </div>
+      </footer>
+
+      {/* Project Modal with iframe preview */}
+      <AnimatePresence>
+        {showProjectModal && selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowProjectModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-6xl h-[80vh] bg-slate-900 rounded-2xl overflow-hidden border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal header */}
+              <div className="absolute top-0 left-0 right-0 p-4 bg-slate-900/90 backdrop-blur-sm border-b border-white/10 flex items-center justify-between z-10">
+                <div>
+                  <h3 className="text-xl font-bold">{selectedProject.title}</h3>
+                  <p className="text-gray-400 text-sm">
+                    {selectedProject.subtitle}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <a
+                    href={selectedProject.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition-colors"
+                  >
+                    <ExternalLink size={16} />
+                    Open Live Site
+                  </a>
+                  <button
+                    onClick={() => setShowProjectModal(false)}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+
+              {/* iframe preview */}
+              <div className="pt-20 h-full">
+                <iframe
+                  src={selectedProject.url}
+                  className="w-full h-full border-0"
+                  title={selectedProject.title}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
