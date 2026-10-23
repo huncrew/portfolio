@@ -132,7 +132,7 @@ const portfolioProjects = [
     subtitle: "Gated Agentic Service-Desk Platform",
     description:
       "AI agents that resolve service-desk tickets end-to-end — password resets, unlocks, access diagnostics — with authorisation re-checked in code inside every action, deployed in the customer's own AWS account. Adversarially tested; every attack refused.",
-    url: "https://oasify.ai",
+    url: "https://oasify.dalegrant.dev",
     gradient: "from-blue-500 to-indigo-500",
     features: [
       "Claude Agent SDK on AgentCore",
